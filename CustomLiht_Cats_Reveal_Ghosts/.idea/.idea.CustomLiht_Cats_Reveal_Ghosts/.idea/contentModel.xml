@@ -18,6 +18,11 @@
             <e p="Readme.cs" t="Include" />
           </e>
         </e>
+        <e p="Scripts" t="Include">
+          <e p="Character" t="Include">
+            <e p="PlayerMovement.cs" t="Include" />
+          </e>
+        </e>
       </e>
       <e p="CustomLiht_Cats_Reveal_Ghosts.sln" t="IncludeFlat" />
       <e p="obj" t="ExcludeRecursive" />
