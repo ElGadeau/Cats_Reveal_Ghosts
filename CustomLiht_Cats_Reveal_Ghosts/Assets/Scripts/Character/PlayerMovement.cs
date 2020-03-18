@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private bool _isPlaying = false;
+    
     [Header("Control Settings")]
     [SerializeField] private float speed = 5.0f;
     [SerializeField] private float mouseSensitivity = 1.0f;
@@ -26,9 +28,12 @@ public class PlayerMovement : MonoBehaviour
             Application.Quit();
             #endif
         }
-        
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
+        if (_isPlaying)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     // Update is called once per frame
