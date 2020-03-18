@@ -22,8 +22,7 @@ public class GhostsMovement : MonoBehaviour
     
     private bool _isAgentNull, _isLocationNull;
 
-    // Update is called once per frame
-    private void Start()
+    private void Awake()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
 

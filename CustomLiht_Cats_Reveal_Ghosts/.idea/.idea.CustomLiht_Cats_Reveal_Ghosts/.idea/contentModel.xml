@@ -25,6 +25,9 @@
           <e p="EnemyAI" t="Include">
             <e p="GhostsMovement.cs" t="Include" />
           </e>
+          <e p="WorldManagement" t="Include">
+            <e p="EntitySpawn.cs" t="Include" />
+          </e>
         </e>
       </e>
       <e p="CustomLiht_Cats_Reveal_Ghosts.sln" t="IncludeFlat" />
