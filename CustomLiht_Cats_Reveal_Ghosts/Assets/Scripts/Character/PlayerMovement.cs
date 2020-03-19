@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Camera playerCamera = null;
     
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (playerCamera == null)
         {
@@ -37,13 +37,13 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         PlayerControl();
         CameraControl();
     }
 
-    void PlayerControl()
+    private void PlayerControl()
     {
         float ver = Input.GetAxis("Vertical");
         float hor = Input.GetAxis("Horizontal");
@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         gameObject.GetComponent<Rigidbody>().MovePosition(transform.position + mov);
     }
 
-    void CameraControl()
+    private void CameraControl()
     {
         float rotX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float rotY = -Input.GetAxis("Mouse Y") * mouseSensitivity;

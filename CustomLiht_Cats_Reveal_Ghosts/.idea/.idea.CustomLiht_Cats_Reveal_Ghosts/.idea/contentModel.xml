@@ -22,7 +22,8 @@
           <e p="Character" t="Include">
             <e p="PlayerMovement.cs" t="Include" />
           </e>
-          <e p="EnemyAI" t="Include">
+          <e p="EntityAI" t="Include">
+            <e p="CatsMovement.cs" t="Include" />
             <e p="GhostsMovement.cs" t="Include" />
           </e>
           <e p="WorldManagement" t="Include">
