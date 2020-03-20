@@ -19,8 +19,22 @@ public class CatsMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        //Find closest ghost
-        float distance = 0;
+        FindClosestGhost();
+        
+        //Look at the ghost
+        if (LookedGhost != null)
+        {
+            // transform.LookAt(LookedGhost.transform);
+            
+            Vector3 ghostPos = new Vector3(LookedGhost.transform.position.x, transform.position.y, LookedGhost.transform.position.z);
+            Quaternion lookOnLook = Quaternion.LookRotation(ghostPos - transform.position);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * speed);
+        }
+    }
+
+    void FindClosestGhost()
+    {
         foreach (var ghost in Ghosts)
         {
             if (LookedGhost == null)
@@ -30,43 +44,5 @@ public class CatsMovement : MonoBehaviour
                 Vector3.Distance(transform.position, LookedGhost.transform.position))
                 LookedGhost = ghost;
         }
-
-
-        if (LookedGhost != null)
-        {
-            // transform.LookAt(LookedGhost.transform);
-            Quaternion lookOnLook = Quaternion.LookRotation(LookedGhost.transform.position - transform.position);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookOnLook, Time.deltaTime * speed);
-        }
-            
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

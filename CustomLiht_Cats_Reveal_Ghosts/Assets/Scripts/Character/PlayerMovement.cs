@@ -8,27 +8,12 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("Control Settings")]
     [SerializeField] private float speed = 5.0f;
-    [SerializeField] private float mouseSensitivity = 1.0f;
-    
-    [Header("Controlled Objects")]
-    [SerializeField] private Camera playerCamera = null;
+
+    [SerializeField] private Camera camera = null;
     
     // Start is called before the first frame update
     private void Start()
     {
-        if (playerCamera == null)
-        {
-            Debug.Log("Camera is not set");
-            Debug.Break();
-            #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-            #elif UNITY_WEBPLAYER
-            Application.OpenURL(webplayerQuitURL);
-            #else
-            Application.Quit();
-            #endif
-        }
-
         if (_isPlaying)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -40,30 +25,50 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         PlayerControl();
-        CameraControl();
     }
 
     private void PlayerControl()
     {
+        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        input = Vector2.ClampMagnitude(input, 1);
+
+        //calculate camera forward
+        var camRot = camera.transform.rotation.eulerAngles;
+
+
+        var angle = Quaternion.Euler(0, camRot.y, 0);
+        
+        Vector3 camF = angle * Vector3.forward;
+        // Vector3 camF = camera.transform.forward;
+        Vector3 camR = camera.transform.right;
+
+        Vector3 mov = (camF * input.y + camR * input.x) * Time.deltaTime * speed;
+        
+        
+        if (mov.x != 0.0f || mov.z != 0.0f)
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mov.normalized), 0.2f);
+        
+        
+        gameObject.GetComponent<Rigidbody>().MovePosition(transform.position + mov);
+
+        /*
         float ver = Input.GetAxis("Vertical");
         float hor = Input.GetAxis("Horizontal");
         
-        Vector3 forward = transform.forward * ver;
-        Vector3 right = transform.right * hor;
-        
-        Vector3 mov = forward + right;
+        Vector3 mov = new Vector3(hor, 0, ver);
 
+        // Vector3 mov = forward;
+        if (mov.x == 1.0f || mov.z == 1.0f)
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mov.normalized), 0.2f);
+        
+        if (mov.x == 1.0f || mov.z == 1.0f)
+            mov.Normalize();
+
+        mov.Scale(camera.transform.forward);
         mov *= speed;
         mov *= Time.deltaTime;
         gameObject.GetComponent<Rigidbody>().MovePosition(transform.position + mov);
-    }
+        */
 
-    private void CameraControl()
-    {
-        float rotX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float rotY = -Input.GetAxis("Mouse Y") * mouseSensitivity;
-
-        playerCamera.transform.Rotate(rotY, 0, 0);
-        transform.Rotate(0, rotX, 0); 
     }
 }

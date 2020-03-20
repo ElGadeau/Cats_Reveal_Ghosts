@@ -1630,7 +1630,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 767155807}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.4210837e-13, z: 0.0000011920915}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1652316292}
@@ -1646,11 +1646,11 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
-  m_Range: 8.29548
-  m_SpotAngle: 78.29575
-  m_InnerSpotAngle: 21.80208
+  m_Range: 7.555124
+  m_SpotAngle: 102.96366
+  m_InnerSpotAngle: 11.656582
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -1851,7 +1851,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 783790618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.85, y: 2.03, z: -0.09}
+  m_LocalPosition: {x: 0.34, y: 2.03, z: -0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1939662369}
@@ -4081,7 +4081,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1652316291}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.35000002, y: -0.3129999, z: 0.491}
+  m_LocalPosition: {x: -0.35000002, y: -0.672, z: 0.49}
   m_LocalScale: {x: 0.1, y: 0.10000012, z: 0.10000012}
   m_Children:
   - {fileID: 767155808}
@@ -4669,14 +4669,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939662366}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.95, z: 0}
+  m_LocalRotation: {x: 0.47803336, y: -0, z: -0, w: 0.87834173}
+  m_LocalPosition: {x: 0, y: 9.33231, z: -2.0832367}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1652316292}
   m_Father: {fileID: 783790623}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 57.114002, y: 0, z: 0}
 --- !u!1 &1956299076 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4576593773300538945, guid: cdc899176cb0bb64d95f0d73db113da4,
