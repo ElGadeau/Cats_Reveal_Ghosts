@@ -34,41 +34,16 @@ public class PlayerMovement : MonoBehaviour
 
         //calculate camera forward
         var camRot = camera.transform.rotation.eulerAngles;
-
-
         var angle = Quaternion.Euler(0, camRot.y, 0);
         
         Vector3 camF = angle * Vector3.forward;
-        // Vector3 camF = camera.transform.forward;
         Vector3 camR = camera.transform.right;
 
         Vector3 mov = (camF * input.y + camR * input.x) * Time.deltaTime * speed;
-        
-        
+
         if (mov.x != 0.0f || mov.z != 0.0f)
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mov.normalized), 0.2f);
-        
-        
+
         gameObject.GetComponent<Rigidbody>().MovePosition(transform.position + mov);
-
-        /*
-        float ver = Input.GetAxis("Vertical");
-        float hor = Input.GetAxis("Horizontal");
-        
-        Vector3 mov = new Vector3(hor, 0, ver);
-
-        // Vector3 mov = forward;
-        if (mov.x == 1.0f || mov.z == 1.0f)
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mov.normalized), 0.2f);
-        
-        if (mov.x == 1.0f || mov.z == 1.0f)
-            mov.Normalize();
-
-        mov.Scale(camera.transform.forward);
-        mov *= speed;
-        mov *= Time.deltaTime;
-        gameObject.GetComponent<Rigidbody>().MovePosition(transform.position + mov);
-        */
-
     }
 }

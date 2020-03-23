@@ -7,6 +7,12 @@ TagManager:
   - TargetPoints
   - Ghost
   - CatSpawn
+  - GhostSpawn
+  - Tile
+  - PlayerSpawn
+  - SpawnTile
+  - Furniture
+  - Floor
   layers:
   - Default
   - TransparentFX

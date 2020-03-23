@@ -9,7 +9,8 @@ public class CameraControl : MonoBehaviour
     [SerializeField] private Vector3 offset;
     [SerializeField] private float speed = 1;
     private bool isLerping = false;
-    private float targetRotation = 0;
+    private bool isAxisInUse = false;
+    [SerializeField] private float targetRotation = 0;
     
     void Start()
     {
@@ -30,43 +31,55 @@ public class CameraControl : MonoBehaviour
 
     void LateUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        CheckInput();
+        ApplyRotation();
+    }
+
+    void CheckInput()
+    {
+        if (Input.GetAxisRaw("Look") != 0.0f && !isAxisInUse)
         {
             isLerping = true;
-            offset = Quaternion.AngleAxis(90.0f, Vector3.up) * offset;
-            targetRotation = transform.rotation.eulerAngles.y + 90.0f;
+            isAxisInUse = true;
+            float angle = 90 * Input.GetAxisRaw("Look");
+            offset = Quaternion.AngleAxis(angle, Vector3.up) * offset;
+            
+            targetRotation += angle;
             
             if (targetRotation > 360)
                 targetRotation -= 360.0f;
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            isLerping = true;
-            offset = Quaternion.AngleAxis(-90.0f, Vector3.up) * offset;
-            targetRotation = transform.rotation.eulerAngles.y - 90.0f;
-
             if (targetRotation < 0)
                 targetRotation += 360.0f;
         }
+        
+        if (Input.GetAxisRaw("Look") == 0.0f)
+        {
+            isAxisInUse = false;
+        }
+    }
 
+    void ApplyRotation()
+    {
+        Vector3 position = player.transform.position;
         if (isLerping)
         {
-            if (Math.Abs(transform.rotation.eulerAngles.y - targetRotation) < 1.0f)
+            
+            if (Math.Abs(transform.rotation.eulerAngles.y - targetRotation) < 0.5f)
             {
                 isLerping = false;
-                transform.position = player.transform.position + offset;
-                transform.LookAt(player.transform.position);
+                transform.position = position + offset;
+                transform.LookAt(position);
             }
             else
             {
-                transform.position = Vector3.Slerp(transform.position, player.transform.position + offset, Time.deltaTime * speed);
-                transform.LookAt(player.transform.position);
+                transform.position = Vector3.Slerp(transform.position, position + offset, Time.deltaTime * speed);
+                transform.LookAt(position);
             }
         }
         else
-            transform.position = player.transform.position + offset;
-        
+            transform.position = position + offset;
     }
+    
 }
 
 

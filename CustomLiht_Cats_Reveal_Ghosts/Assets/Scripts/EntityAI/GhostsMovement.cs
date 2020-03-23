@@ -21,7 +21,6 @@ public class GhostsMovement : MonoBehaviour
     }
     
     [SerializeField] private List<Target> targets = new List<Target>();
-    
     private NavMeshAgent Agent = null;
     [SerializeField] private Vector3 NextLocation = Vector3.zero;
     [SerializeField] private int LocationIndex = 0;
@@ -85,5 +84,13 @@ public class GhostsMovement : MonoBehaviour
         SelectedPath = UnityEngine.Random.Range(0, targets.Count);
         NextLocation = targets[SelectedPath].list[0].position;
         _isLocationNull = targets.Count <= 0;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Furniture"))
+        {
+            Physics.IgnoreCollision(other.collider, GetComponent<Collider>());
+        }
     }
 }

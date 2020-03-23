@@ -10,6 +10,8 @@ public class EntitySpawn : MonoBehaviour
 
     [SerializeField] private GameObject ghostPrefab = null;
     [SerializeField] private GameObject catPrefab = null;
+
+    //TODO remove this list and use Tags instead. At start, the manager will find GO with tag and will add them to a list
     [SerializeField] private List<GameObject> worldTiles = null;
 
     [SerializeField] private int NumberGhost;
@@ -45,6 +47,8 @@ public class EntitySpawn : MonoBehaviour
 
         List<GameObject> catSpawns = GameObject.FindGameObjectsWithTag("CatSpawn").ToList();
         
+        Debug.Log(catSpawns.Count);
+        
         for (int i = 0; i < NumberCats; i++)
         {
             int rng = Random.Range(0, catSpawns.Count);
@@ -57,14 +61,17 @@ public class EntitySpawn : MonoBehaviour
     
     private void SpawnGhost()
     {
+        //TODO make the ghost spawn at position [0] of the selected path
+        
         NumberGhost = Random.Range(ghostNumberRange.x, ghostNumberRange.y + 1);
 
         for (int i = 0; i < NumberGhost; i++)
         {
             int rng = Random.Range(0, worldTiles.Count);
-            Transform spawnPoint = worldTiles[rng].transform.Find("GhostSpawnPoint");
-            GameObject ghost = Instantiate(ghostPrefab, spawnPoint);
-            ghost.GetComponent<GhostsMovement>().SetTargets(FindTargetPoints(worldTiles[rng].transform));
+
+            var targets = FindTargetPoints(worldTiles[rng].transform.Find("GhostData"));
+            GameObject ghost = Instantiate(ghostPrefab, targets[0].list[0]);
+            ghost.GetComponent<GhostsMovement>().SetTargets(targets);
             worldTiles.RemoveAt(rng);
         }
     }
@@ -91,5 +98,4 @@ public class EntitySpawn : MonoBehaviour
 
         return targetList;
     }
-    
 }
