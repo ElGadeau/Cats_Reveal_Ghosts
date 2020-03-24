@@ -132,6 +132,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BedRoom
       objectReference: {fileID: 0}
+    - target: {fileID: 3105890984817292319, guid: 07e92510267259a4dbc948221a527271,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5388987345026490343, guid: 07e92510267259a4dbc948221a527271,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -206,6 +211,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LaudryRoom
+      objectReference: {fileID: 0}
+    - target: {fileID: 4777870587264607330, guid: 1aa36930887db09459457326eb319963,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8364660210725770865, guid: 1aa36930887db09459457326eb319963,
         type: 3}
@@ -367,6 +377,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bathroom
       objectReference: {fileID: 0}
+    - target: {fileID: 7983906673254661273, guid: a1f293a9d43679f41a6670fb5682a215,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7983906673254661274, guid: a1f293a9d43679f41a6670fb5682a215,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -465,6 +480,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3005372461494613341, guid: 3a6ecffa0f1b50d448c597048c38b2a4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300885913900042062, guid: 3a6ecffa0f1b50d448c597048c38b2a4,
         type: 3}
@@ -571,6 +591,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Kitchen
       objectReference: {fileID: 0}
+    - target: {fileID: 4672863212857198363, guid: 65d89ca3a6394c84287c7c1e1d10455b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8539389550190851336, guid: 65d89ca3a6394c84287c7c1e1d10455b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -657,6 +682,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DeskRoom
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306946086183585218, guid: 40d3ac80049a27f449138f1db7866683,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1610233571747149777, guid: 40d3ac80049a27f449138f1db7866683,
         type: 3}
@@ -755,10 +785,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1926601869}
   - component: {fileID: 1926601868}
+  - component: {fileID: 1926601870}
   m_Layer: 0
   m_Name: WorldManager
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -769,7 +800,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926601867}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17e394007bd8e1b43bbe2030708e2585, type: 3}
   m_Name: 
@@ -796,12 +827,34 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926601867}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.453167, y: 16.793625, z: -10.09399}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1926601870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926601867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8b6bdb115883144c9cff6f66b38b5ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartTilePrefab: {fileID: 1710166557, guid: 07e92510267259a4dbc948221a527271, type: 3}
+  EndTilePrefab: {fileID: 1179759823369141013, guid: 3a6ecffa0f1b50d448c597048c38b2a4,
+    type: 3}
+  TilesPrefabs:
+  - {fileID: 6488808821757222970, guid: a1f293a9d43679f41a6670fb5682a215, type: 3}
+  - {fileID: 8545085473669127245, guid: 40d3ac80049a27f449138f1db7866683, type: 3}
+  - {fileID: 4111337682494682603, guid: 65d89ca3a6394c84287c7c1e1d10455b, type: 3}
+  - {fileID: 7408265885877917993, guid: 1aa36930887db09459457326eb319963, type: 3}
+  - {fileID: 3563297235605314176, guid: 1b1891e66e5bf0748889a54a79cf0fd9, type: 3}
+  IterationRange: {x: 3, y: 3}
 --- !u!1 &1939662366
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,7 +873,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &1939662367
 AudioListener:
   m_ObjectHideFlags: 0
@@ -913,6 +966,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Parents_Room
+      objectReference: {fileID: 0}
+    - target: {fileID: 928536850885549781, guid: 1b1891e66e5bf0748889a54a79cf0fd9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4231565608500751558, guid: 1b1891e66e5bf0748889a54a79cf0fd9,
         type: 3}
@@ -1012,6 +1070,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Witch
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621469087718480656, guid: b081a7ae417bb0248b1b86e44ddc3f7f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8537022238786742531, guid: b081a7ae417bb0248b1b86e44ddc3f7f,
         type: 3}

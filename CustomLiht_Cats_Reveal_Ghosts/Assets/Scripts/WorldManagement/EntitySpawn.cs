@@ -61,8 +61,6 @@ public class EntitySpawn : MonoBehaviour
     
     private void SpawnGhost()
     {
-        //TODO make the ghost spawn at position [0] of the selected path
-        
         NumberGhost = Random.Range(ghostNumberRange.x, ghostNumberRange.y + 1);
 
         for (int i = 0; i < NumberGhost; i++)
