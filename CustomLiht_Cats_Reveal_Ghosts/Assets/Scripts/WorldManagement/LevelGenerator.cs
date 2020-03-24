@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
@@ -11,7 +12,7 @@ public class LevelGenerator : MonoBehaviour
     private List<Sides> availableSides = new List<Sides>();
     private StartTile startTile;
     private EndTile endTile;
-    private List<Tiles> placedTile = new List<Tiles>();
+    private List<Tiles> placedTiles = new List<Tiles>();
 
     private LayerMask roomLayerMask;
 
@@ -94,7 +95,7 @@ public class LevelGenerator : MonoBehaviour
 
                 tilePlaced = true;
                 
-                placedTile.Add(currentTile);
+                placedTiles.Add(currentTile);
                 //remove sides
                 currentSide.gameObject.SetActive(false);
                 availableSides.Remove(currentSide);
@@ -112,6 +113,12 @@ public class LevelGenerator : MonoBehaviour
             }
         }
         //Should be reset if room was not placed
+        // ResetLevelGenerator();
+        if (!tilePlaced)
+        {
+            Destroy(currentTile.gameObject);
+            ResetLevelGenerator();
+        }
     }
 
     private void PlaceEndTile()
@@ -119,6 +126,29 @@ public class LevelGenerator : MonoBehaviour
         Debug.Log("Place End Tile");
     }
 
+    private void ResetLevelGenerator()
+    {
+        Debug.LogError("Reset Level Generator");
+        StopCoroutine(nameof(GenerateLevel));
+        
+        if (startTile)
+            Destroy(startTile.gameObject);
+        
+        if (endTile)
+            Destroy(endTile.gameObject);
+
+        foreach (Tiles tile in placedTiles)
+        {
+            Destroy(tile.gameObject);
+        }
+        
+        placedTiles.Clear();
+        availableSides.Clear();
+
+
+        StartCoroutine(nameof(GenerateLevel));
+    }
+    
     private void AddSideToList(Tiles tile, ref List<Sides> sides)
     {
         foreach (var side in tile.sides)
@@ -148,8 +178,11 @@ public class LevelGenerator : MonoBehaviour
     private bool CheckTileOverlap(Tiles tile)
     {
         Bounds bounds = tile.TileBound;
-        bounds.Expand(-0.1f);
-
+        bounds.center = tile.transform.position + Vector3.up;
+        bounds.Expand(-0.5f);
+        
+        // Debug.DrawRay(bounds.center, (tile.transform.rotation * bounds.size / 2), Color.blue, 1000.0f);
+        
         Collider[] colliders =
             Physics.OverlapBox(bounds.center, bounds.size / 2, tile.transform.rotation, roomLayerMask);
 
