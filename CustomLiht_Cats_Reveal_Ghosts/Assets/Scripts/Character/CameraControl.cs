@@ -63,7 +63,6 @@ public class CameraControl : MonoBehaviour
         Vector3 position = player.transform.position;
         if (isLerping)
         {
-            
             if (Math.Abs(transform.rotation.eulerAngles.y - targetRotation) < 0.5f)
             {
                 isLerping = false;

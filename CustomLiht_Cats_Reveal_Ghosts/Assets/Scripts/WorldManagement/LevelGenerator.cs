@@ -8,11 +8,10 @@ public class LevelGenerator : MonoBehaviour
     public Tiles StartTilePrefab, EndTilePrefab;
     public List<Tiles> TilesPrefabs = new List<Tiles>();
     public Vector2Int IterationRange = new Vector2Int(5, 10);
-    
-    private List<Sides> availableSides = new List<Sides>();
-    private StartTile startTile;
-    private EndTile endTile;
+
+    private Tiles startTile, endTile;
     private List<Tiles> placedTiles = new List<Tiles>();
+    private List<Sides> availableSides = new List<Sides>();
 
     private LayerMask roomLayerMask;
 
@@ -38,7 +37,7 @@ public class LevelGenerator : MonoBehaviour
 
         for (int i = 0; i < iterations; ++i)
         {
-            PlaceTile();
+            PlaceRandomTile();
             yield return interval;
         }
 
@@ -52,80 +51,80 @@ public class LevelGenerator : MonoBehaviour
 
     private void PlaceStartTile()
     {
-        Debug.Log("Place Start Tile");
+        Debug.Log("Placing Start Tile");
 
-        startTile = Instantiate(StartTilePrefab, transform) as StartTile;
+        startTile = Instantiate(StartTilePrefab, transform);
         
         //Add all sides to the side list
         AddSideToList(startTile, ref availableSides);
         startTile.transform.position = Vector3.zero;
         startTile.transform.rotation = Quaternion.identity;
-
+        
+        Debug.Log("Start Tile was placed");
     }
 
-    private void PlaceTile()
+    private void PlaceRandomTile()
     {
-        Debug.Log("Place Random Tile");
+        Debug.Log("Placing Random Tile");
 
-        Tiles currentTile = Instantiate(TilesPrefabs[Random.Range(0, TilesPrefabs.Count)], transform) as Tiles;
+        Tiles currentTile = Instantiate(TilesPrefabs[Random.Range(0, TilesPrefabs.Count)], transform);
 
-        
-        List<Sides> allAvailableSides = new List<Sides>(availableSides);
-        List<Sides> currentSides = new List<Sides>();
-        AddSideToList(currentTile, ref currentSides);
-        
-        //Get sides from current room and add them to the list of available sides
         AddSideToList(currentTile, ref availableSides);
 
-        bool tilePlaced = false;
+        if (!PlaceTileInWorld(currentTile))
+        {
+            Destroy(currentTile.gameObject);
+            ResetLevelGenerator();
+        }
+        
+        Debug.Log("Tile was placed");
+    }
 
-        //try all available side
-        foreach (Sides availableSide in allAvailableSides)
+    private void PlaceEndTile()
+    {
+        Debug.Log("Placing End Tile");
+
+        endTile = Instantiate(EndTilePrefab, transform);
+
+        if (!PlaceTileInWorld(endTile))
+            ResetLevelGenerator();
+        
+        Debug.Log("End Tile was placed");
+    }
+
+    private bool PlaceTileInWorld(Tiles p_tile)
+    {
+        List<Sides> currentSides = new List<Sides>();
+        AddSideToList(p_tile, ref currentSides);
+        
+        foreach (Sides availableSide in availableSides)
         {
             //try all available side in current room
             foreach (Sides currentSide in currentSides)
             {
                 //position the tile
-                PositionTileAtSide(ref currentTile, currentSide, availableSide);
+                PositionTileAtSide(ref p_tile, currentSide, availableSide);
 
-                if (CheckTileOverlap(currentTile))
+                if (CheckTileOverlap(p_tile))
                 {
                     continue;
                 }
 
-                tilePlaced = true;
-                
-                placedTiles.Add(currentTile);
+                placedTiles.Add(p_tile);
                 //remove sides
                 currentSide.gameObject.SetActive(false);
                 availableSides.Remove(currentSide);
                 
                 availableSide.gameObject.SetActive(false);
                 availableSides.Remove(availableSide);
-                
-                //exit the loop
-                break;
-            }
-            //exit loop
-            if (tilePlaced)
-            {
-                break;
+
+                return true;
             }
         }
-        //Should be reset if room was not placed
-        // ResetLevelGenerator();
-        if (!tilePlaced)
-        {
-            Destroy(currentTile.gameObject);
-            ResetLevelGenerator();
-        }
+        
+        return false;
     }
-
-    private void PlaceEndTile()
-    {
-        Debug.Log("Place End Tile");
-    }
-
+    
     private void ResetLevelGenerator()
     {
         Debug.LogError("Reset Level Generator");

@@ -28,9 +28,7 @@
             <e p="GhostsMovement.cs" t="Include" />
           </e>
           <e p="Tiles" t="Include">
-            <e p="EndTile.cs" t="Include" />
             <e p="Sides.cs" t="Include" />
-            <e p="StartTile.cs" t="Include" />
             <e p="Tiles.cs" t="Include" />
           </e>
           <e p="WorldManagement" t="Include">
