@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using NavMeshBuilder = UnityEditor.AI.NavMeshBuilder;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -20,7 +20,7 @@ public class LevelGenerator : MonoBehaviour
         roomLayerMask = LayerMask.GetMask("Tile");
         StartCoroutine(nameof(GenerateLevel));
     }
-
+    
     IEnumerator GenerateLevel()
     {
         WaitForSeconds startup = new WaitForSeconds(1);
@@ -44,6 +44,12 @@ public class LevelGenerator : MonoBehaviour
         //place end tile
         PlaceEndTile();
         yield return interval;
+        
+        //update navmesh
+        NavMeshBuilder.BuildNavMesh();
+        
+        //now it is time to start the entity spawn
+        GetComponent<EntitySpawn>().SpawnEntity();
         
         //Generator is finished
         StopCoroutine(nameof(GenerateLevel));
@@ -180,10 +186,7 @@ public class LevelGenerator : MonoBehaviour
         bounds.center = tile.transform.position + Vector3.up;
         bounds.Expand(-0.5f);
         
-        // Debug.DrawRay(bounds.center, (tile.transform.rotation * bounds.size / 2), Color.blue, 1000.0f);
-        
-        Collider[] colliders =
-            Physics.OverlapBox(bounds.center, bounds.size / 2, tile.transform.rotation, roomLayerMask);
+        Collider[] colliders = Physics.OverlapBox(bounds.center, bounds.size / 2, tile.transform.rotation, roomLayerMask);
 
         if (colliders.Length > 0)
         {

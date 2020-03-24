@@ -5,55 +5,48 @@ using UnityEngine;
 
 public class EntitySpawn : MonoBehaviour
 {
-    [SerializeField] private Vector2Int ghostNumberRange;
-    [SerializeField] private Vector2Int catNumberRange;
+
+    [SerializeField] [Range(0, 1)] private float PourcentageOfGhost = 75;
+    [SerializeField] [Range(0, 1)] private float PourcentageOfCats = 75;
 
     [SerializeField] private GameObject ghostPrefab = null;
     [SerializeField] private GameObject catPrefab = null;
 
-    //TODO remove this list and use Tags instead. At start, the manager will find GO with tag and will add them to a list
-    [SerializeField] private List<GameObject> worldTiles = null;
 
-    [SerializeField] private int NumberGhost;
-    [SerializeField] private int NumberCats;
+    private List<GameObject> worldTiles = null;
+    private int NumberGhost;
+    private int NumberCats;
     
-    // Start is called before the first frame update
-    private void Start()
+    private GameObject ghosts, cats;
+
+    public void SpawnEntity()
     {
-        CheckData();
+        FindAllTiles();
+        
+        ghosts = new GameObject("GHOSTS");
+        cats = new GameObject("CATS");
+
         SpawnGhost();
         SpawnCats();
     }
 
-    private void CheckData()
+    private void FindAllTiles()
     {
-        if (ghostNumberRange.x > worldTiles.Count || ghostNumberRange.y > worldTiles.Count || ghostNumberRange.x < 0 || ghostNumberRange.x < 0)
-        {
-            Debug.Log("The number of ghost asked is not valid");
-            Debug.Break();
-            #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-            #elif UNITY_WEBPLAYER
-            Application.OpenURL(webplayerQuitURL);
-            #else
-            Application.Quit();
-            #endif
-        }
+        worldTiles = GameObject.FindGameObjectsWithTag("Tile").ToList();
     }
 
     private void SpawnCats()
     {
-        NumberCats = Random.Range(catNumberRange.x, catNumberRange.y + 1);
-
         List<GameObject> catSpawns = GameObject.FindGameObjectsWithTag("CatSpawn").ToList();
-        
-        Debug.Log(catSpawns.Count);
-        
+        // NumberCats = Random.Range(catNumberRange.x, catNumberRange.y + 1);
+        NumberCats = (int) (catSpawns.Count * PourcentageOfCats);
+
         for (int i = 0; i < NumberCats; i++)
         {
             int rng = Random.Range(0, catSpawns.Count);
-            Transform spawnPoint = catSpawns[rng].transform;
-            GameObject cat = Instantiate(catPrefab, spawnPoint);
+            // Transform spawnPoint = catSpawns[rng].transform;
+            GameObject cat = Instantiate(catPrefab, cats.transform);
+            cat.transform.position = catSpawns[rng].transform.position;
             catSpawns.RemoveAt(rng);
         }
     }
@@ -61,14 +54,16 @@ public class EntitySpawn : MonoBehaviour
     
     private void SpawnGhost()
     {
-        NumberGhost = Random.Range(ghostNumberRange.x, ghostNumberRange.y + 1);
-
+        NumberGhost = (int) (worldTiles.Count * PourcentageOfGhost);
+        
         for (int i = 0; i < NumberGhost; i++)
         {
             int rng = Random.Range(0, worldTiles.Count);
 
             var targets = FindTargetPoints(worldTiles[rng].transform.Find("GhostData"));
-            GameObject ghost = Instantiate(ghostPrefab, targets[0].list[0]);
+            
+            GameObject ghost = Instantiate(ghostPrefab, ghosts.transform);
+            ghost.transform.position = targets[0].list[0].position;
             ghost.GetComponent<GhostsMovement>().SetTargets(targets);
             worldTiles.RemoveAt(rng);
         }

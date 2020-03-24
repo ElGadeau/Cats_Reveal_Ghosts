@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 906470473907078368}
   m_Layer: 0
   m_Name: Geo_Box_03
-  m_TagString: Untagged
+  m_TagString: Furniture
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -573,7 +573,7 @@ GameObject:
   - component: {fileID: 3785194453623070540}
   m_Layer: 0
   m_Name: Geo_Box_01
-  m_TagString: Untagged
+  m_TagString: Furniture
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -927,7 +927,7 @@ GameObject:
   - component: {fileID: 5743818887680056215}
   m_Layer: 0
   m_Name: Geo_Shelf
-  m_TagString: Untagged
+  m_TagString: Furniture
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2055,7 +2055,7 @@ GameObject:
   - component: {fileID: 2099627057797260276}
   m_Layer: 0
   m_Name: Geo_Box_02
-  m_TagString: Untagged
+  m_TagString: Furniture
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3482,7 +3482,7 @@ GameObject:
   - component: {fileID: 5502464753715651003}
   m_Layer: 0
   m_Name: Goe_LittleShelf_grp
-  m_TagString: Untagged
+  m_TagString: Furniture
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
