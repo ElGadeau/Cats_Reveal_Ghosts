@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.AI;
+using UnityEngine.AI;
 // using UnityEditor.AI;
 // using UnityEditor;
 
@@ -10,6 +10,8 @@ public class LevelGenerator : MonoBehaviour
     public Tiles StartTilePrefab, EndTilePrefab;
     public List<Tiles> TilesPrefabs = new List<Tiles>();
     public Vector2Int IterationRange = new Vector2Int(5, 10);
+    public NavMeshSurface surface = null;
+
 
     private Tiles startTile, endTile;
     private List<Tiles> placedTiles = new List<Tiles>();
@@ -48,7 +50,7 @@ public class LevelGenerator : MonoBehaviour
         yield return interval;
         
         //update navmesh
-        NavMeshBuilder.BuildNavMesh();
+        surface.BuildNavMesh();
         
         
         //Spawn every entity

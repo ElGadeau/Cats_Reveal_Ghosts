@@ -490,7 +490,7 @@ GameObject:
   - component: {fileID: 7983906673253288810}
   - component: {fileID: 7983906673253288809}
   - component: {fileID: 7983906673253288811}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Prop_Tuile_Base_01
   m_TagString: Floor
   m_Icon: {fileID: 0}

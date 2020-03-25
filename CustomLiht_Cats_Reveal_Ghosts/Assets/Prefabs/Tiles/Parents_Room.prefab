@@ -1153,7 +1153,7 @@ GameObject:
   - component: {fileID: 3390267798629274346}
   - component: {fileID: 6789155538063986438}
   - component: {fileID: 4937899118882278589}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Prop_Tuile_Base_02
   m_TagString: Floor
   m_Icon: {fileID: 0}

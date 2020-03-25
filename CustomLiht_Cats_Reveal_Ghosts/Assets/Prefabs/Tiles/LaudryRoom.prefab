@@ -825,7 +825,7 @@ GameObject:
   - component: {fileID: 4322972818320912577}
   - component: {fileID: 6741754960767787356}
   - component: {fileID: 8806710789552262397}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Geo_Sol
   m_TagString: Floor
   m_Icon: {fileID: 0}

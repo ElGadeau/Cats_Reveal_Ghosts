@@ -1962,7 +1962,7 @@ GameObject:
   - component: {fileID: 6463725523199398241}
   - component: {fileID: 4594246290317525244}
   - component: {fileID: 665563731996967900}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Geo_Sol
   m_TagString: Floor
   m_Icon: {fileID: 0}
