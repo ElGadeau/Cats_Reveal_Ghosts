@@ -680,7 +680,7 @@ GameObject:
   - component: {fileID: 1710166557}
   m_Layer: 9
   m_Name: BedRoom
-  m_TagString: SpawnTile
+  m_TagString: StartTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -5,20 +5,26 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private bool _isPlaying = false;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject CameraPrefabs = null;
     
     [Header("Control Settings")]
     [SerializeField] private float speed = 5.0f;
 
-    [SerializeField] private Camera camera = null;
+    private Camera camera = null;
     
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         if (_isPlaying)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+
+        camera = Instantiate(CameraPrefabs).GetComponent<Camera>();
+
     }
 
     // Update is called once per frame

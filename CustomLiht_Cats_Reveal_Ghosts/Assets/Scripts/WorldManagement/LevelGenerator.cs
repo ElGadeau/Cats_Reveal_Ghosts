@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NavMeshBuilder = UnityEditor.AI.NavMeshBuilder;
+using UnityEditor.AI;
+// using UnityEditor.AI;
+// using UnityEditor;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -48,9 +50,12 @@ public class LevelGenerator : MonoBehaviour
         //update navmesh
         NavMeshBuilder.BuildNavMesh();
         
-        //now it is time to start the entity spawn
-        GetComponent<EntitySpawn>().SpawnEntity();
         
+        //Spawn every entity
+            //now it is time to start the entity spawn
+            GetComponent<EntitySpawn>().SpawnEntity();
+        //-----------------
+            
         //Generator is finished
         StopCoroutine(nameof(GenerateLevel));
     }

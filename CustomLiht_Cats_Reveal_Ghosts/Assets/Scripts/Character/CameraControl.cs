@@ -11,31 +11,33 @@ public class CameraControl : MonoBehaviour
     private bool isLerping = false;
     private bool isAxisInUse = false;
     [SerializeField] private float targetRotation = 0;
-    
-    void Start()
+
+    private void Awake()
     {
-        if (player == null)
-        {
-            Debug.Log("the player is not set in the camera");
-            Debug.Break();
-            #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-            #elif UNITY_WEBPLAYER
-            Application.OpenURL(webplayerQuitURL);
-            #else
-            Application.Quit();
-            #endif
-        }
+        // if (player == null)
+        // {
+        //     Debug.LogError("the player is not set in the camera");
+        //     Debug.Break();
+        //     #if UNITY_EDITOR
+        //     UnityEditor.EditorApplication.isPlaying = false;
+        //     #elif UNITY_WEBPLAYER
+        //     Application.OpenURL(webplayerQuitURL);
+        //     #else
+        //     Application.Quit();
+        //     #endif
+        // }
+
+        player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
         transform.LookAt(player.transform.position);
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
         CheckInput();
         ApplyRotation();
     }
 
-    void CheckInput()
+    private void CheckInput()
     {
         if (Input.GetAxisRaw("Look") != 0.0f && !isAxisInUse)
         {
@@ -51,14 +53,13 @@ public class CameraControl : MonoBehaviour
             if (targetRotation < 0)
                 targetRotation += 360.0f;
         }
-        
-        if (Input.GetAxisRaw("Look") == 0.0f)
+        else if (Input.GetAxisRaw("Look") == 0.0f)
         {
             isAxisInUse = false;
         }
     }
 
-    void ApplyRotation()
+    private void ApplyRotation()
     {
         Vector3 position = player.transform.position;
         if (isLerping)
@@ -78,7 +79,11 @@ public class CameraControl : MonoBehaviour
         else
             transform.position = position + offset;
     }
-    
+
+    public Vector3 Offset
+    {
+        set => offset = value;
+    }
 }
 
 

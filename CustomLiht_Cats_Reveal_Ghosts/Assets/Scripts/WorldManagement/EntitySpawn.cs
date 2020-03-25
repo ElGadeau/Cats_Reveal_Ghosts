@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EntitySpawn : MonoBehaviour
 {
-
-    [SerializeField] [Range(0, 1)] private float PourcentageOfGhost = 75;
-    [SerializeField] [Range(0, 1)] private float PourcentageOfCats = 75;
-
+    [Header("Prefabs")]
     [SerializeField] private GameObject ghostPrefab = null;
     [SerializeField] private GameObject catPrefab = null;
+    [SerializeField] private GameObject playerPrefab = null;
 
+    [Header("Entity Data")]
+    [SerializeField] [Range(0, 1)] private float percentageOfGhost = 0.75f;
+    [SerializeField] [Range(0, 1)] private float percentageOfCats = 0.75f;
 
     private List<GameObject> worldTiles = null;
-    private int NumberGhost;
-    private int NumberCats;
-    
+    private int NumberGhost = 0;
+    private int NumberCats = 0;
     private GameObject ghosts, cats;
 
     public void SpawnEntity()
@@ -28,6 +29,7 @@ public class EntitySpawn : MonoBehaviour
 
         SpawnGhost();
         SpawnCats();
+        SpawnPlayer();
     }
 
     private void FindAllTiles()
@@ -38,13 +40,11 @@ public class EntitySpawn : MonoBehaviour
     private void SpawnCats()
     {
         List<GameObject> catSpawns = GameObject.FindGameObjectsWithTag("CatSpawn").ToList();
-        // NumberCats = Random.Range(catNumberRange.x, catNumberRange.y + 1);
-        NumberCats = (int) (catSpawns.Count * PourcentageOfCats);
+        NumberCats = (int) (catSpawns.Count * percentageOfCats);
 
         for (int i = 0; i < NumberCats; i++)
         {
             int rng = Random.Range(0, catSpawns.Count);
-            // Transform spawnPoint = catSpawns[rng].transform;
             GameObject cat = Instantiate(catPrefab, cats.transform);
             cat.transform.position = catSpawns[rng].transform.position;
             catSpawns.RemoveAt(rng);
@@ -54,7 +54,7 @@ public class EntitySpawn : MonoBehaviour
     
     private void SpawnGhost()
     {
-        NumberGhost = (int) (worldTiles.Count * PourcentageOfGhost);
+        NumberGhost = (int) (worldTiles.Count * percentageOfGhost);
         
         for (int i = 0; i < NumberGhost; i++)
         {
@@ -69,6 +69,16 @@ public class EntitySpawn : MonoBehaviour
         }
     }
 
+    private void SpawnPlayer()
+    {
+        var point = GameObject.FindGameObjectsWithTag("StartTile")[0].transform;
+
+        // Debug.LogError("point size:" + point.Length);
+        
+        GameObject witch = Instantiate(playerPrefab);
+        witch.transform.position = point.position;
+    }
+    
     private List<GhostsMovement.Target> FindTargetPoints(Transform p_transform)
     {
         List<GhostsMovement.Target> targetList = new List<GhostsMovement.Target>();

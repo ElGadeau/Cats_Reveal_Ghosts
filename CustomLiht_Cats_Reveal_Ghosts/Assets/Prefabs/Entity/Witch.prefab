@@ -472,8 +472,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isPlaying: 0
+  CameraPrefabs: {fileID: 6597906138130965532, guid: 61d8cb313395ae7408df4dab4baa1563,
+    type: 3}
   speed: 5
-  camera: {fileID: 0}
 --- !u!1 &8740818313370881859
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,9 +10,10 @@ TagManager:
   - GhostSpawn
   - Tile
   - PlayerSpawn
-  - SpawnTile
   - Furniture
   - Floor
+  - EndTile
+  - StartTile
   layers:
   - Default
   - TransparentFX
