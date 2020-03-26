@@ -10,13 +10,16 @@ public class CatsMovement : MonoBehaviour
     private GameObject LookedGhost = null;
     private float speed = 2.0f;
     
-    // Start is called before the first frame update
     private void Awake()
+    {
+        FindAllGhosts();
+    }
+
+    private void FindAllGhosts()
     {
         Ghosts = GameObject.FindGameObjectsWithTag("Ghost");
     }
 
-    // Update is called once per frame
     private void Update()
     {
         FindClosestGhost();
@@ -24,8 +27,6 @@ public class CatsMovement : MonoBehaviour
         //Look at the ghost
         if (LookedGhost != null)
         {
-            // transform.LookAt(LookedGhost.transform);
-            
             Vector3 ghostPos = new Vector3(LookedGhost.transform.position.x, transform.position.y, LookedGhost.transform.position.z);
             Quaternion lookOnLook = Quaternion.LookRotation(ghostPos - transform.position);
 
@@ -37,6 +38,12 @@ public class CatsMovement : MonoBehaviour
     {
         foreach (var ghost in Ghosts)
         {
+            if (ghost == null)
+            {
+                FindAllGhosts();
+                break;
+            }
+            
             if (LookedGhost == null)
                 LookedGhost = ghost;
 

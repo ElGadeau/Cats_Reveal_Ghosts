@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 // using UnityEditor.AI;
@@ -7,10 +8,12 @@ using UnityEngine.AI;
 
 public class LevelGenerator : MonoBehaviour
 {
+    public bool _isPlaying = false;
+    
     public Tiles StartTilePrefab, EndTilePrefab;
     public List<Tiles> TilesPrefabs = new List<Tiles>();
     public Vector2Int IterationRange = new Vector2Int(5, 10);
-    public NavMeshSurface surface = null;
+    // public NavMeshSurface surface = null;
 
 
     private Tiles startTile, endTile;
@@ -21,6 +24,12 @@ public class LevelGenerator : MonoBehaviour
 
     private void Start()
     {
+        if (_isPlaying)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
         roomLayerMask = LayerMask.GetMask("Tile");
         StartCoroutine(nameof(GenerateLevel));
     }
@@ -32,77 +41,56 @@ public class LevelGenerator : MonoBehaviour
 
         yield return startup;
         
-        //place start tile
         PlaceStartTile();
         yield return interval;
 
-        //place some tiles
         int iterations = Random.Range(IterationRange.x, IterationRange.y);
-
         for (int i = 0; i < iterations; ++i)
         {
             PlaceRandomTile();
             yield return interval;
         }
 
-        //place end tile
         PlaceEndTile();
         yield return interval;
         
-        //update navmesh
-        surface.BuildNavMesh();
+        GetComponent<NavMeshSurface>().BuildNavMesh();
         
+        GetComponent<EntitySpawn>().CanSpawn = true;
+        GetComponent<EntitySpawn>().SpawnEntity();
         
-        //Spawn every entity
-            //now it is time to start the entity spawn
-            GetComponent<EntitySpawn>().SpawnEntity();
-        //-----------------
-            
-        //Generator is finished
-        StopCoroutine(nameof(GenerateLevel));
+        yield return null;
     }
 
     private void PlaceStartTile()
     {
-        Debug.Log("Placing Start Tile");
-
         startTile = Instantiate(StartTilePrefab, transform);
         
         //Add all sides to the side list
         AddSideToList(startTile, ref availableSides);
-        startTile.transform.position = Vector3.zero;
-        startTile.transform.rotation = Quaternion.identity;
-        
-        Debug.Log("Start Tile was placed");
+        var tileTransform = startTile.transform;
+        tileTransform.position = Vector3.zero;
+        tileTransform.rotation = Quaternion.identity;
     }
 
     private void PlaceRandomTile()
     {
-        Debug.Log("Placing Random Tile");
-
         Tiles currentTile = Instantiate(TilesPrefabs[Random.Range(0, TilesPrefabs.Count)], transform);
 
         AddSideToList(currentTile, ref availableSides);
-
-        if (!PlaceTileInWorld(currentTile))
-        {
-            Destroy(currentTile.gameObject);
-            ResetLevelGenerator();
-        }
+        if (PlaceTileInWorld(currentTile))
+            return;
         
-        Debug.Log("Tile was placed");
+        Destroy(currentTile.gameObject);
+        ResetLevelGenerator();
     }
 
     private void PlaceEndTile()
     {
-        Debug.Log("Placing End Tile");
-
         endTile = Instantiate(EndTilePrefab, transform);
 
         if (!PlaceTileInWorld(endTile))
             ResetLevelGenerator();
-        
-        Debug.Log("End Tile was placed");
     }
 
     private bool PlaceTileInWorld(Tiles p_tile)
@@ -140,7 +128,8 @@ public class LevelGenerator : MonoBehaviour
     
     private void ResetLevelGenerator()
     {
-        Debug.LogError("Reset Level Generator");
+        GetComponent<EntitySpawn>().CanSpawn = false;
+        
         StopCoroutine(nameof(GenerateLevel));
         
         if (startTile)
@@ -157,7 +146,6 @@ public class LevelGenerator : MonoBehaviour
         placedTiles.Clear();
         availableSides.Clear();
 
-
         StartCoroutine(nameof(GenerateLevel));
     }
     
@@ -172,8 +160,9 @@ public class LevelGenerator : MonoBehaviour
 
     private void PositionTileAtSide(ref Tiles tile, Sides tileSide, Sides targetSide)
     {
-        tile.transform.position = Vector3.zero;
-        tile.transform.rotation = Quaternion.identity;
+        var tileTransform = tile.transform;
+        tileTransform.position = Vector3.zero;
+        tileTransform.rotation = Quaternion.identity;
         
         //rotate tile so that both sides are facing each other
         Vector3 targetSideEuler = targetSide.transform.eulerAngles;
@@ -181,38 +170,27 @@ public class LevelGenerator : MonoBehaviour
 
         float deltaAngle = Mathf.DeltaAngle(tileSideEuler.y, targetSideEuler.y);
         Quaternion currentTileTargetRotation = Quaternion.AngleAxis(deltaAngle, Vector3.up);
-        tile.transform.rotation = currentTileTargetRotation * Quaternion.Euler(0.0f, 180.0f, 0.0f);
+        tileTransform.rotation = currentTileTargetRotation * Quaternion.Euler(0.0f, 180.0f, 0.0f);
 
-        Vector3 tilePositionOffset = tileSide.transform.position - tile.transform.position;
-        tile.transform.position = targetSide.transform.position - tilePositionOffset;
+        Vector3 tilePositionOffset = tileSide.transform.position - tileTransform.position;
+        tileTransform.position = targetSide.transform.position - tilePositionOffset;
     }
 
     private bool CheckTileOverlap(Tiles tile)
     {
         Bounds bounds = tile.TileBound;
         bounds.center = tile.transform.position + Vector3.up;
-        bounds.Expand(-0.5f);
+        bounds.Expand(-0.1f);
         
         Collider[] colliders = Physics.OverlapBox(bounds.center, bounds.size / 2, tile.transform.rotation, roomLayerMask);
 
-        if (colliders.Length > 0)
-        {
-            //ignore collider with current tile
-            foreach (Collider c in colliders)
-            {
-                if (c.transform.parent.gameObject.Equals(tile.gameObject))
-                {
-                    continue;
-                }
-                else
-                {
-                    Debug.Log("There was a collision");
-                    return true;
-                }
-            }
-        }
+        //return true if no collision was made
+        return colliders.Length > 0 && colliders.Any(c => !c.transform.parent.gameObject.Equals(tile.gameObject));
+    }
 
-        return false;
+    public void RegenerateWorld()
+    {
+        ResetLevelGenerator();
     }
     
 }

@@ -8,7 +8,6 @@ using UnityEngine.Serialization;
 
 public class GhostsMovement : MonoBehaviour
 {
-    //TODO Move this class in another file and add better methods
     [System.Serializable]
     public class Target
     {
@@ -70,7 +69,8 @@ public class GhostsMovement : MonoBehaviour
                 else
                     LocationIndex = 0;
 
-                NextLocation = targets[SelectedPath].list[LocationIndex].position;
+                if (targets[SelectedPath].list[LocationIndex] != null)
+                    NextLocation = targets[SelectedPath].list[LocationIndex].position;
             }
         }
     }

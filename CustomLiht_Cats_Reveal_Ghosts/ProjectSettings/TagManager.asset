@@ -14,6 +14,8 @@ TagManager:
   - Floor
   - EndTile
   - StartTile
+  - GameManager
+  - Cat
   layers:
   - Default
   - TransparentFX

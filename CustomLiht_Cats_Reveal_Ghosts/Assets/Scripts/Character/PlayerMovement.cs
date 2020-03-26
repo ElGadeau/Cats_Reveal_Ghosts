@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
+using UnityEditorInternal.VR;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private bool _isPlaying = false;
-
     [Header("Prefabs")]
     [SerializeField] private GameObject CameraPrefabs = null;
     
@@ -13,26 +15,43 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed = 5.0f;
 
     private Camera camera = null;
-    
-    // Start is called before the first frame update
+    private UnityEvent deathEvent = new UnityEvent();
+
+    // public float timer = 0.0f;
+
+    public GameObject timer = null;
+
     private void Awake()
     {
-        if (_isPlaying)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-
+        timer = new GameObject("Timer");
+        timer.AddComponent<TimeScore>();
         camera = Instantiate(CameraPrefabs).GetComponent<Camera>();
-
+        deathEvent.AddListener(GameObject.FindGameObjectWithTag("GameManager").GetComponent<DeathEvent>().OnDeath);
+        deathEvent.AddListener(timer.GetComponent<TimeScore>().OnDeath);
     }
-
-    // Update is called once per frame
+    
     private void Update()
     {
         PlayerControl();
+        if (transform.position.y <= -50.0f)
+            deathEvent.Invoke();
     }
 
+    //Kill the player when colliding with a ghost
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Ghost"))
+            deathEvent.Invoke();
+
+        if (other.gameObject.CompareTag("EndTile"))
+        {
+            timer.GetComponent<TimeScore>().ShouldRun = false;
+            Debug.Log("you won in : " + timer.GetComponent<TimeScore>().TimerScore + " seconds");
+            Debug.Log("with a score of : " + timer.GetComponent<TimeScore>().GetScore() + " points");
+        }
+    }
+    
+    //Move the player using the direction of the camera
     private void PlayerControl()
     {
         Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));

@@ -5,68 +5,59 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 {
-    [SerializeField] private Transform player = null;
     [SerializeField] private Vector3 offset;
     [SerializeField] private float speed = 1;
-    private bool isLerping = false;
-    private bool isAxisInUse = false;
-    [SerializeField] private float targetRotation = 0;
+    
+    private Transform _player = null;
+    private bool _isLerping = false;
+    private bool _isAxisInUse = false;
+    private float _targetRotation = 0;
 
     private void Awake()
     {
-        // if (player == null)
-        // {
-        //     Debug.LogError("the player is not set in the camera");
-        //     Debug.Break();
-        //     #if UNITY_EDITOR
-        //     UnityEditor.EditorApplication.isPlaying = false;
-        //     #elif UNITY_WEBPLAYER
-        //     Application.OpenURL(webplayerQuitURL);
-        //     #else
-        //     Application.Quit();
-        //     #endif
-        // }
-
-        player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
-        transform.LookAt(player.transform.position);
+        _player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
+        transform.LookAt(_player.transform.position);
     }
 
+    //using late update to make sure the player position is updated
     private void LateUpdate()
     {
         CheckInput();
         ApplyRotation();
     }
 
+    //Check for the input and use it on press only
     private void CheckInput()
     {
-        if (Input.GetAxisRaw("Look") != 0.0f && !isAxisInUse)
+        if (Input.GetAxisRaw("Look") != 0.0f && !_isAxisInUse)
         {
-            isLerping = true;
-            isAxisInUse = true;
+            _isLerping = true;
+            _isAxisInUse = true;
             float angle = 90 * Input.GetAxisRaw("Look");
             offset = Quaternion.AngleAxis(angle, Vector3.up) * offset;
             
-            targetRotation += angle;
+            _targetRotation += angle;
             
-            if (targetRotation > 360)
-                targetRotation -= 360.0f;
-            if (targetRotation < 0)
-                targetRotation += 360.0f;
+            if (_targetRotation > 360)
+                _targetRotation -= 360.0f;
+            if (_targetRotation < 0)
+                _targetRotation += 360.0f;
         }
         else if (Input.GetAxisRaw("Look") == 0.0f)
         {
-            isAxisInUse = false;
+            _isAxisInUse = false;
         }
     }
 
+    //rotate the camera around the player by 90 degree
     private void ApplyRotation()
     {
-        Vector3 position = player.transform.position;
-        if (isLerping)
+        Vector3 position = _player.transform.position;
+        if (_isLerping)
         {
-            if (Math.Abs(transform.rotation.eulerAngles.y - targetRotation) < 0.5f)
+            if (Math.Abs(transform.rotation.eulerAngles.y - _targetRotation) < 0.5f)
             {
-                isLerping = false;
+                _isLerping = false;
                 transform.position = position + offset;
                 transform.LookAt(position);
             }
@@ -79,32 +70,4 @@ public class CameraControl : MonoBehaviour
         else
             transform.position = position + offset;
     }
-
-    public Vector3 Offset
-    {
-        set => offset = value;
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
