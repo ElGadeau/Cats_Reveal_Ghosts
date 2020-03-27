@@ -1,29 +1,39 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraControl : MonoBehaviour
 {
     [SerializeField] private Vector3 offset;
     [SerializeField] private float speed = 1;
+    [SerializeField] private Image blackScreen = null;
+    [SerializeField] private float fadeTime = 1.0f;
     
     private Transform _player = null;
     private bool _isLerping = false;
     private bool _isAxisInUse = false;
     private float _targetRotation = 0;
-
-    private void Awake()
-    {
-        _player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
-        transform.LookAt(_player.transform.position);
-    }
-
+    
     //using late update to make sure the player position is updated
     private void LateUpdate()
     {
-        CheckInput();
-        ApplyRotation();
+        if (_player == null)
+            FindPlayer();
+        else
+        {
+            CheckInput();
+            ApplyRotation();
+        }
+    }
+
+    private void FindPlayer()
+    {
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player)
+        {
+            _player = player.transform;
+            transform.LookAt(_player.transform.position);
+        }
     }
 
     //Check for the input and use it on press only
@@ -69,5 +79,24 @@ public class CameraControl : MonoBehaviour
         }
         else
             transform.position = position + offset;
+    }
+
+    public void OnDeath()
+    {
+        FadeToBlack();
+    }
+
+    private void FadeToBlack()
+    {
+        blackScreen.color = Color.black;
+        blackScreen.canvasRenderer.SetAlpha(0.0f);
+        blackScreen.CrossFadeAlpha(1.0f, fadeTime, false);
+    }
+
+    public void FadeFromBlack()
+    {
+        blackScreen.color = Color.black;
+        blackScreen.canvasRenderer.SetAlpha(1.0f);
+        blackScreen.CrossFadeAlpha(0.0f, fadeTime, false);
     }
 }

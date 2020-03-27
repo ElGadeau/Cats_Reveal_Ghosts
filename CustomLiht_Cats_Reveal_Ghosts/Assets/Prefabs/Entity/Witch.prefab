@@ -416,7 +416,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4621469087718480656}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -428,7 +428,7 @@ Transform:
   - {fileID: 5418341849812800885}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
 --- !u!54 &3675830855302385646
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -471,10 +471,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d99d69236593d45a3041367514b494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlaying: 0
   CameraPrefabs: {fileID: 6597906138130965532, guid: 61d8cb313395ae7408df4dab4baa1563,
     type: 3}
   speed: 5
+  _isDead: 0
+  timer: {fileID: 0}
 --- !u!1 &8740818313370881859
 GameObject:
   m_ObjectHideFlags: 0

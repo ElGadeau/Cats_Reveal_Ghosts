@@ -32,6 +32,11 @@ public class DeathEvent : MonoBehaviour
 
     public void OnDeath()
     {
+        Invoke(nameof(FireEvent), 1.0f);
+    }
+
+    private void FireEvent()
+    {
         Death.Invoke();
     }
 }

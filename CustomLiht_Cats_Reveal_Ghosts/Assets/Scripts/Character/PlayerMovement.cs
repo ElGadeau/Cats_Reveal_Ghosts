@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private Camera camera = null;
     private UnityEvent deathEvent = new UnityEvent();
 
-    // public float timer = 0.0f;
+    public bool _isDead = false;
 
     public GameObject timer = null;
 
@@ -25,13 +25,18 @@ public class PlayerMovement : MonoBehaviour
     {
         timer = new GameObject("Timer");
         timer.AddComponent<TimeScore>();
-        camera = Instantiate(CameraPrefabs).GetComponent<Camera>();
+        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        deathEvent.AddListener(OnDeath);
+        deathEvent.AddListener(camera.GetComponent<CameraControl>().OnDeath);
         deathEvent.AddListener(GameObject.FindGameObjectWithTag("GameManager").GetComponent<DeathEvent>().OnDeath);
         deathEvent.AddListener(timer.GetComponent<TimeScore>().OnDeath);
     }
     
     private void Update()
     {
+        if (_isDead)
+            return;
+        
         PlayerControl();
         if (transform.position.y <= -50.0f)
             deathEvent.Invoke();
@@ -40,6 +45,9 @@ public class PlayerMovement : MonoBehaviour
     //Kill the player when colliding with a ghost
     private void OnCollisionEnter(Collision other)
     {
+        if (_isDead)
+            return;
+        
         if (other.gameObject.CompareTag("Ghost"))
             deathEvent.Invoke();
 
@@ -70,5 +78,25 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mov.normalized), 0.2f);
 
         gameObject.GetComponent<Rigidbody>().MovePosition(transform.position + mov);
+    }
+
+    private void OnDeath()
+    {
+        var nextRotation = Quaternion.AngleAxis(-90.0f, Vector3.right);
+        StartCoroutine(Dying(nextRotation));
+        _isDead = true;
+    }
+
+    IEnumerator Dying(Quaternion nextRot)
+    {
+        while (transform.rotation.eulerAngles.x > -90.0f)
+        {
+            // var currentRot = transform.rotation;
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, nextRot, Time.deltaTime * 6);
+            yield return null;
+        }
+        
+        yield return new WaitForEndOfFrame();
     }
 }
