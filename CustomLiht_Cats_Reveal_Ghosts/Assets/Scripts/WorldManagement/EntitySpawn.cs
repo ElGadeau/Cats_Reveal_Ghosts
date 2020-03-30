@@ -1,170 +1,229 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Character;
+using EntityAI;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
-public class EntitySpawn : MonoBehaviour
+namespace WorldManagement
 {
-    [Header("Prefabs")]
-    [SerializeField] private GameObject ghostPrefab = null;
-    [SerializeField] private GameObject catPrefab = null;
-    [SerializeField] private GameObject playerPrefab = null;
-
-    [Header("Entity Data")]
-    [SerializeField] [Range(0, 1)] private float percentageOfGhost = 0.75f;
-    [SerializeField] [Range(0, 1)] private float percentageOfCats = 0.75f;
-
-    private bool _canSpawn = false;
-    private int _numberGhost = 0;
-    private int _numberCats = 0;
-    private GameObject _ghosts, _cats, _player;
-    
-    public void SpawnEntity()
+    public class EntitySpawn : MonoBehaviour
     {
-        //Create new empty objects for sorting purposes
-        _ghosts = new GameObject("GHOSTS");
-        _cats = new GameObject("CATS");
+        [Header("Prefabs")]
+        [SerializeField] private GameObject ghostPrefab = null;
+        [SerializeField] private GameObject catPrefab = null;
+        [SerializeField] private GameObject playerPrefab = null;
 
-        //Destroy all existing ghosts and cats befor spawning new ones
-        DestroyEntitys();
-        
-        SpawnGhost();
-        SpawnCats();
-        SpawnPlayer();
-    }
+        [Header("Entity Data")]
+        [SerializeField] [Range(0, 1)] private float percentageOfGhost = 0.75f;
+        [SerializeField] [Range(0, 1)] private float percentageOfCats = 0.75f;
+
+        private bool _canSpawn = false;
+        private int _numberGhost = 0;
+        private int _numberCats = 0;
+        private GameObject _ghosts, _cats, _player;
     
-    //Look for all possible spawn location and choose randomly x% of them
-    private void SpawnCats()
-    {
-        if (!_canSpawn)
-            return;
-
-        List<GameObject> catSpawns = GameObject.FindGameObjectsWithTag("CatSpawn").ToList();
-        _numberCats = (int) (catSpawns.Count * percentageOfCats);
-
-        for (int i = 0; i < _numberCats; i++)
+        public void SpawnEntity(List<GameObject> p_tiles)
         {
-            int rng = Random.Range(0, catSpawns.Count);
-            GameObject cat = Instantiate(catPrefab, _cats.transform);
-            cat.transform.position = catSpawns[rng].transform.position;
-            catSpawns.RemoveAt(rng);
-        }
-    }
-    
-    //Look for all possible spawn location and choose randomly x% of them
-    private void SpawnGhost()
-    {
-        if (!_canSpawn)
-            return;
-        
-        List<GameObject> worldTiles = GameObject.FindGameObjectsWithTag("Tile").ToList();
-        _numberGhost = (int) (worldTiles.Count * percentageOfGhost);
-        
-        for (int i = 0; i < _numberGhost; i++)
-        {
-            int rng = Random.Range(0, worldTiles.Count);
+            //Create new empty objects for sorting purposes
+            _ghosts = new GameObject("GHOSTS");
+            _cats = new GameObject("CATS");
 
-            var targets = FindTargetPoints(worldTiles[rng].transform.Find("GhostData"));
+            //Destroy all existing ghosts and cats before spawning new ones
+            DestroyEntitys();
+        
+            //first -> choose randomly '%' of tile to spawn ghost
+            ChooseSpawnableTile(p_tiles);
+        
+            //the spawn will be made based on the tile instead
+        
+            foreach (var tile in p_tiles)
+            {
+                GameObject ghost = null;
+                if (tile.GetComponent<Tiles.Tiles>().SpawnGhost)
+                    ghost = SpawnGhost(tile);
             
+                SpawnCats(tile, ghost);
+            }
+        
+            // SpawnGhost();
+            // SpawnCats();
+
+            //spawn the player
+            SpawnPlayer();
+        }
+    
+        //Look for all possible spawn location and choose randomly x% of them
+        private void SpawnCats(GameObject p_tile, GameObject p_ghost)
+        {
+            if (!_canSpawn)
+                return;
+
+            // List<GameObject> catSpawns = GameObject.FindGameObjectsWithTag("CatSpawn").ToList();
+            var catSpawns = FindCatSpawns(p_tile.transform.Find("CatData"));
+
+            if (catSpawns == null)
+                return;
+
+            // _numberCats = (int) (catSpawns.Count * percentageOfCats);
+            _numberCats = (int)Math.Ceiling(catSpawns.Count * percentageOfCats);
+        
+            for (int i = 0; i < _numberCats; i++)
+            {
+                int rng = Random.Range(0, catSpawns.Count);
+                GameObject cat = Instantiate(catPrefab, _cats.transform);
+                cat.transform.position = catSpawns[rng].transform.position;
+                cat.GetComponent<CatsBehavior>().Target = p_ghost;
+                catSpawns.RemoveAt(rng);
+            }
+        }
+    
+        //Look for all possible spawn location and choose randomly x% of them
+        private GameObject SpawnGhost(GameObject p_tile)
+        {
+            if (!_canSpawn)
+                return null;
+
+            var targets = FindTargetPoints(p_tile.transform.Find("GhostData"));
+        
             GameObject ghost = Instantiate(ghostPrefab, _ghosts.transform);
             ghost.transform.position = targets[0].list[0].position;
-            ghost.GetComponent<GhostsMovement>().SetTargets(targets);
-            worldTiles.RemoveAt(rng);
-        }
-    }
+            ghost.GetComponent<GhostsBehavior>().SetTargets(targets);
 
-    //Find the starting tile of the map and spawn a player at this location
-    private void SpawnPlayer()
-    {
-        if (_player == null)
-            _player = Instantiate(playerPrefab);
-
-        if (!_canSpawn)
-        {
-            _player.SetActive(false);
-            return;
+            return ghost;
         }
 
-        var point = GameObject.FindGameObjectWithTag("PlayerSpawn").transform;
-        _player.transform.position = point.position;
-        _player.transform.rotation = Quaternion.Euler(-90, -90, 0);
-        _player.SetActive(true);
-        _player.GetComponent<PlayerMovement>()._isDead = false;
-        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraControl>().FadeFromBlack();
-    }
-    
-    //Find the position of the navigation path for the selected ghost
-    private List<GhostsMovement.Target> FindTargetPoints(Transform p_transform)
-    {
-        List<GhostsMovement.Target> targetList = new List<GhostsMovement.Target>();
-        
-        foreach (Transform child in p_transform)
+        //Find the starting tile of the map and spawn a player at this location
+        private void SpawnPlayer()
         {
-            if (child.CompareTag("TargetPoints"))
+            if (_player == null)
+                _player = Instantiate(playerPrefab);
+
+            if (!_canSpawn)
             {
-                GhostsMovement.Target tmpTr = new GhostsMovement.Target();
+                _player.SetActive(false);
+                return;
+            }
 
-                foreach (Transform point in child.transform)
+            var point = GameObject.FindGameObjectWithTag("PlayerSpawn").transform;
+            _player.transform.position = point.position;
+            _player.transform.rotation = Quaternion.Euler(-90, -90, 0);
+            _player.SetActive(true);
+            _player.GetComponent<PlayerMovement>()._isDead = false;
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraControl>().FadeFromBlack();
+        }
+    
+        //Find the position of the navigation path for the selected ghost
+        private List<GhostsBehavior.Target> FindTargetPoints(Transform p_transform)
+        {
+            var targetList = new List<GhostsBehavior.Target>();
+        
+            foreach (Transform child in p_transform)
+            {
+                if (child.CompareTag("TargetPoints"))
                 {
-                    tmpTr.list.Add(point);
-                }
+                    GhostsBehavior.Target tmpTr = new GhostsBehavior.Target();
+
+                    foreach (Transform point in child.transform)
+                    {
+                        tmpTr.list.Add(point);
+                    }
                     
-                if (tmpTr.list.Count > 0)
-                    targetList.Add(tmpTr);
+                    if (tmpTr.list.Count > 0)
+                        targetList.Add(tmpTr);
+                }
+            }
+
+            return targetList;
+        }
+
+        private List<Transform> FindCatSpawns(Transform p_transform)
+        {
+            var spawnList = new List<Transform>();
+
+            if (p_transform == null)
+                return null;
+            
+            foreach (Transform child in p_transform)
+            {
+                if (child.CompareTag("CatSpawn"))
+                {
+                    spawnList.Add(child);
+                }
+            }
+        
+            return spawnList;
+        }
+
+        private void ChooseSpawnableTile(List<GameObject> p_tiles)
+        {
+            int numberTiles = (int) Math.Ceiling(p_tiles.Count * percentageOfGhost);
+
+            var tileList = new List<GameObject>();
+        
+            for (int i = 0; i < numberTiles; ++i)
+            {
+                int rng = Random.Range(0, p_tiles.Count);
+
+                p_tiles[rng].GetComponent<Tiles.Tiles>().SpawnGhost = true;
+                tileList.Add(p_tiles[rng]);
+                p_tiles.RemoveAt(rng);
+            }
+
+            foreach (var tile in tileList)
+            {
+                p_tiles.Add(tile);
             }
         }
 
-        return targetList;
-    }
-
-    public void RegeneratePlayer()
-    {
-        _player.SetActive(false);
-        SpawnPlayer();
-    }
+        public void RegeneratePlayer()
+        {
+            _player.SetActive(false);
+            SpawnPlayer();
+        }
     
-    public void RegenerateGhosts()
-    {
-        DestroyGhosts();
-        SpawnGhost();
-    }
-
-    public void RegenerateCats()
-    {
-        DestroyCats();
-        SpawnCats();
-    }
-
-    private void DestroyEntitys()
-    {
-        DestroyGhosts();
-        DestroyCats();
-    }
-
-    private void DestroyGhosts()
-    {
-        var allGhosts = GameObject.FindGameObjectsWithTag("Ghost");
-
-        foreach (var ghost in allGhosts)
+        public void RegenerateGhosts()
         {
-            Destroy(ghost);
+            DestroyGhosts();
+            // SpawnGhost();
         }
-    }
 
-    private void DestroyCats()
-    {
-        var allCats = GameObject.FindGameObjectsWithTag("Cat");
+        public void RegenerateCats()
+        {
+            DestroyCats();
+            // SpawnCats();
+        }
+
+        private void DestroyEntitys()
+        {
+            DestroyGhosts();
+            DestroyCats();
+        }
+
+        private void DestroyGhosts()
+        {
+            var allGhosts = GameObject.FindGameObjectsWithTag("Ghost");
+
+            foreach (var ghost in allGhosts)
+            {
+                Destroy(ghost);
+            }
+        }
+
+        private void DestroyCats()
+        {
+            var allCats = GameObject.FindGameObjectsWithTag("Cat");
         
-        foreach (var cat in allCats)
-        {
-            Destroy(cat);
+            foreach (var cat in allCats)
+            {
+                Destroy(cat);
+            }
         }
-    }
 
-    public bool CanSpawn
-    {
-        get => _canSpawn;
-        set => _canSpawn = value;
+        public bool CanSpawn
+        {
+            get => _canSpawn;
+            set => _canSpawn = value;
+        }
     }
 }

@@ -42,11 +42,12 @@
             <e p="TimeScore.cs" t="Include" />
           </e>
           <e p="EntityAI" t="Include">
-            <e p="CatsMovement.cs" t="Include" />
-            <e p="GhostsMovement.cs" t="Include" />
+            <e p="CatsBehavior.cs" t="Include" />
+            <e p="GhostsBehavior.cs" t="Include" />
           </e>
           <e p="Events" t="Include">
             <e p="DeathEvent.cs" t="Include" />
+            <e p="MenuEvent.cs" t="Include" />
           </e>
           <e p="Tiles" t="Include">
             <e p="Sides.cs" t="Include" />

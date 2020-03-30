@@ -1,9 +1,19 @@
 ﻿using UnityEngine;
 
-public class Tiles : MonoBehaviour
+namespace Tiles
 {
-    public Sides[] sides;
-    public Collider colliders;
+    public class Tiles : MonoBehaviour
+    {
+        public Sides[] sides;
+        public Collider colliders;
+        private bool spawnGhost = false;
 
-    public Bounds TileBound => colliders.bounds;
+        public Bounds TileBound => colliders.bounds;
+
+        public bool SpawnGhost
+        {
+            get => spawnGhost;
+            set => spawnGhost = value;
+        }
+    }
 }

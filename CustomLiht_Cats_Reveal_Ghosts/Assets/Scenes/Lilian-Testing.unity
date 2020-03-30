@@ -466,7 +466,7 @@ PrefabInstance:
     - target: {fileID: 6597906138130965539, guid: 61d8cb313395ae7408df4dab4baa1563,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 181.3
       objectReference: {fileID: 0}
     - target: {fileID: 6597906138130965539, guid: 61d8cb313395ae7408df4dab4baa1563,
         type: 3}
@@ -481,22 +481,22 @@ PrefabInstance:
     - target: {fileID: 6597906138130965539, guid: 61d8cb313395ae7408df4dab4baa1563,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.2732503
+      value: -0.014664189
       objectReference: {fileID: 0}
     - target: {fileID: 6597906138130965539, guid: 61d8cb313395ae7408df4dab4baa1563,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.4181297
       objectReference: {fileID: 0}
     - target: {fileID: 6597906138130965539, guid: 61d8cb313395ae7408df4dab4baa1563,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.006750976
       objectReference: {fileID: 0}
     - target: {fileID: 6597906138130965539, guid: 61d8cb313395ae7408df4dab4baa1563,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.96194303
+      value: 0.9082439
       objectReference: {fileID: 0}
     - target: {fileID: 6597906138130965539, guid: 61d8cb313395ae7408df4dab4baa1563,
         type: 3}
@@ -506,12 +506,12 @@ PrefabInstance:
     - target: {fileID: 6597906138130965539, guid: 61d8cb313395ae7408df4dab4baa1563,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 31.716002
+      value: -1.85
       objectReference: {fileID: 0}
     - target: {fileID: 6597906138130965539, guid: 61d8cb313395ae7408df4dab4baa1563,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 49.44
       objectReference: {fileID: 0}
     - target: {fileID: 6597906138130965539, guid: 61d8cb313395ae7408df4dab4baa1563,
         type: 3}
@@ -523,6 +523,11 @@ PrefabInstance:
       propertyPath: blackScreen
       value: 
       objectReference: {fileID: 283532108}
+    - target: {fileID: 6597906138130965538, guid: 61d8cb313395ae7408df4dab4baa1563,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 1847
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61d8cb313395ae7408df4dab4baa1563, type: 3}
 --- !u!1 &1750259224
@@ -593,8 +598,8 @@ MonoBehaviour:
     type: 3}
   playerPrefab: {fileID: 4621469087718480656, guid: b081a7ae417bb0248b1b86e44ddc3f7f,
     type: 3}
-  percentageOfGhost: 0.5
-  percentageOfCats: 0.7
+  percentageOfGhost: 0.7
+  percentageOfCats: 0.8
 --- !u!4 &1926601869
 Transform:
   m_ObjectHideFlags: 0
@@ -621,18 +626,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8b6bdb115883144c9cff6f66b38b5ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPlaying: 1
-  StartTilePrefab: {fileID: 1710166557, guid: 07e92510267259a4dbc948221a527271, type: 3}
-  EndTilePrefab: {fileID: 1179759823369141013, guid: 7876377728f4ff34589442e8f84cba95,
+  isPlaying: 0
+  startTilePrefab: {fileID: 1710166557, guid: 07e92510267259a4dbc948221a527271, type: 3}
+  endTilePrefab: {fileID: 1179759823369141013, guid: 7876377728f4ff34589442e8f84cba95,
     type: 3}
-  TilesPrefabs:
+  tilesPrefabs:
   - {fileID: 6488808821757222970, guid: a1f293a9d43679f41a6670fb5682a215, type: 3}
   - {fileID: 8545085473669127245, guid: 40d3ac80049a27f449138f1db7866683, type: 3}
+  - {fileID: 1179759823369141013, guid: 3a6ecffa0f1b50d448c597048c38b2a4, type: 3}
   - {fileID: 4111337682494682603, guid: 65d89ca3a6394c84287c7c1e1d10455b, type: 3}
   - {fileID: 7408265885877917993, guid: 1aa36930887db09459457326eb319963, type: 3}
   - {fileID: 3563297235605314176, guid: 1b1891e66e5bf0748889a54a79cf0fd9, type: 3}
-  - {fileID: 1179759823369141013, guid: 3a6ecffa0f1b50d448c597048c38b2a4, type: 3}
-  IterationRange: {x: 55, y: 70}
+  iterationRange: {x: 50, y: 50}
+  _placedTiles: []
 --- !u!114 &1926601871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,9 +680,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e65fc4fac7e170443bc1f9ea7a85537c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ghosts: 1
-  cats: 1
-  world: 1
+  ghosts: 0
+  cats: 0
+  world: 0
 --- !u!1 &2144847707
 GameObject:
   m_ObjectHideFlags: 0

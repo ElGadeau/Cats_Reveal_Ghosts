@@ -1,13 +1,15 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Sides : MonoBehaviour
+namespace Tiles
 {
-    private void OnDrawGizmos()
+    public class Sides : MonoBehaviour
     {
-        Ray ray = new Ray(transform.position, transform.forward);
+        private void OnDrawGizmos()
+        {
+            Ray ray = new Ray(transform.position, transform.forward);
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(ray);
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(ray);
+        }
     }
 }
