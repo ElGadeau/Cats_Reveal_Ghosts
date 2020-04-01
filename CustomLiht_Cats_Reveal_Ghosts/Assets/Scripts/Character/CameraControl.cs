@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Character
@@ -9,13 +11,33 @@ namespace Character
         [SerializeField] private Vector3 offset;
         [SerializeField] private float speed = 1;
         [SerializeField] private Image blackScreen = null;
+        [SerializeField] private GameObject Score = null;
         [SerializeField] private float fadeTime = 1.0f;
-    
+
         private Transform _player = null;
         private bool _isLerping = false;
         private bool _isAxisInUse = false;
+        private bool _gameFinished = false;
         private float _targetRotation = 0;
-    
+
+        private void Start()
+        {
+            // Score.SetActive(false);
+            
+            var texts = Score.GetComponentsInChildren<Text>();
+
+            foreach (Text text in texts)
+            {
+                text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
+            }
+        }
+
+        private void Update()
+        {
+            if (_gameFinished && Input.anyKeyDown)
+                SceneManager.LoadScene("MainMenu");
+        }
+
         //using late update to make sure the player position is updated
         private void LateUpdate()
         {
@@ -104,5 +126,34 @@ namespace Character
             blackScreen.canvasRenderer.SetAlpha(1.0f);
             blackScreen.CrossFadeAlpha(0.0f, fadeTime, false);
         }
+
+        public void EndGame(int p_score)
+        {
+            blackScreen.CrossFadeAlpha(1.0f, 0.5f, false);
+            var texts = Score.GetComponentsInChildren<Text>();
+
+            foreach (Text text in texts)
+            {
+                if (text.name == "data")
+                {
+                    text.text = p_score.ToString();
+                }
+                StartCoroutine(FadeTextIn(0.5f, text));
+            }
+
+        }
+
+        private IEnumerator FadeTextIn(float p_time, Text p_text)
+        {
+            p_text.color = new Color(p_text.color.r, p_text.color.g, p_text.color.b, 0);
+            while (p_text.color.a < 1.0f)
+            {
+                p_text.color = new Color(p_text.color.r, p_text.color.g, p_text.color.b, p_text.color.a + (Time.deltaTime / p_time));
+                yield return null;
+            }
+
+            _gameFinished = true;
+        }
+        
     }
 }

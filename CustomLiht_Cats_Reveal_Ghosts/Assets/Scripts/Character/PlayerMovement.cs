@@ -3,59 +3,56 @@ using Data;
 using Events;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Character
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [Header("Prefabs")]
-        [SerializeField] private GameObject CameraPrefabs = null;
-    
         [Header("Control Settings")]
         [SerializeField] private float speed = 5.0f;
 
-        private Camera camera = null;
-        private UnityEvent deathEvent = new UnityEvent();
+        private Camera _camera = null;
+        private UnityEvent _deathEvent = new UnityEvent();
 
-        public bool _isDead = false;
+        public bool isDead = false;
 
-        public GameObject timer = null;
+        private GameObject _timer = null;
 
         private void Awake()
         {
-            timer = new GameObject("Timer");
-            timer.AddComponent<TimeScore>();
-            camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-            deathEvent.AddListener(OnDeath);
-            deathEvent.AddListener(camera.GetComponent<CameraControl>().OnDeath);
-            deathEvent.AddListener(GameObject.FindGameObjectWithTag("GameManager").GetComponent<DeathEvent>().OnDeath);
-            deathEvent.AddListener(timer.GetComponent<TimeScore>().OnDeath);
+            _timer = GameObject.FindGameObjectWithTag("Timer");
+            _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+            _deathEvent.AddListener(OnDeath);
+            _deathEvent.AddListener(_camera.GetComponent<CameraControl>().OnDeath);
+            _deathEvent.AddListener(GameObject.FindGameObjectWithTag("GameManager").GetComponent<DeathEvent>().OnDeath);
+            _deathEvent.AddListener(_timer.GetComponent<TimeScore>().OnDeath);
         }
     
         private void Update()
         {
-            if (_isDead)
+            if (isDead)
                 return;
         
             PlayerControl();
             if (transform.position.y <= -50.0f)
-                deathEvent.Invoke();
+                _deathEvent.Invoke();
         }
 
         //Kill the player when colliding with a ghost
         private void OnCollisionEnter(Collision other)
         {
-            if (_isDead)
+            if (isDead)
                 return;
         
             if (other.gameObject.CompareTag("Ghost"))
-                deathEvent.Invoke();
+                _deathEvent.Invoke();
 
             if (other.gameObject.CompareTag("EndTile"))
             {
-                timer.GetComponent<TimeScore>().ShouldRun = false;
-                Debug.Log("you won in : " + timer.GetComponent<TimeScore>().TimerScore + " seconds");
-                Debug.Log("with a score of : " + timer.GetComponent<TimeScore>().GetScore() + " points");
+                _timer.GetComponent<TimeScore>().ShouldRun = false;
+                _camera.GetComponent<CameraControl>().EndGame(_timer.GetComponent<TimeScore>().GetScore());
+                isDead = true;
             }
         }
     
@@ -66,11 +63,11 @@ namespace Character
             input = Vector2.ClampMagnitude(input, 1);
 
             //calculate camera forward
-            var camRot = camera.transform.rotation.eulerAngles;
+            var camRot = _camera.transform.rotation.eulerAngles;
             var angle = Quaternion.Euler(0, camRot.y, 0);
         
             Vector3 camF = angle * Vector3.forward;
-            Vector3 camR = camera.transform.right;
+            Vector3 camR = _camera.transform.right;
 
             Vector3 mov = (camF * input.y + camR * input.x) * Time.deltaTime * speed;
 
@@ -84,7 +81,7 @@ namespace Character
         {
             var nextRotation = Quaternion.AngleAxis(-90.0f, Vector3.right);
             StartCoroutine(Dying(nextRotation));
-            _isDead = true;
+            isDead = true;
         }
 
         IEnumerator Dying(Quaternion nextRot)

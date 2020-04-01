@@ -16,6 +16,7 @@ TagManager:
   - StartTile
   - GameManager
   - Cat
+  - Timer
   layers:
   - Default
   - TransparentFX

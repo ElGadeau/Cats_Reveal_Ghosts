@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Data
 {
     public class TimeScore : MonoBehaviour
     {
+        public int scoreMultiplier = 1;
         private float _timerScore = 0;
         private bool _shouldRun = true;
         private int _zeroDeathScore = 100;
@@ -27,7 +29,8 @@ namespace Data
             tmpScore = 1000.0f - _timerScore;
             if (_numberOfDeath == 0)
                 tmpScore += _zeroDeathScore;
-        
+            tmpScore *= scoreMultiplier;
+            
             return (int)tmpScore;
         }
         public float TimerScore => _timerScore;

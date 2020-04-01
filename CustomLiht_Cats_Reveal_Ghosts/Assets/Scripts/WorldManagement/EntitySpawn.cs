@@ -116,7 +116,7 @@ namespace WorldManagement
             _player.transform.position = point.position;
             _player.transform.rotation = Quaternion.Euler(-90, -90, 0);
             _player.SetActive(true);
-            _player.GetComponent<PlayerMovement>()._isDead = false;
+            _player.GetComponent<PlayerMovement>().isDead = false;
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraControl>().FadeFromBlack();
         }
     
