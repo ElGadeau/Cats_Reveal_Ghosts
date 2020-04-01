@@ -5,10 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Lilian-Testing.unity
-    guid: b4a92475411a54d41b960aec10fb4ccc
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/Scenes/FinalScenes/MainMenu.unity
     guid: c1122e1d0d8ad3f42983d6d6efcd5d0b
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/EasyMode.unity
+    guid: ab871f329d4bed64e817b331e7bf1c66
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/NormalMode.unity
+    guid: d2c82af53c7695941bc2aedfcce1a5e3
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/HardMode.unity
+    guid: 0ddd0fcaea0c96d43842f5a3c68a9957
   m_configObjects: {}

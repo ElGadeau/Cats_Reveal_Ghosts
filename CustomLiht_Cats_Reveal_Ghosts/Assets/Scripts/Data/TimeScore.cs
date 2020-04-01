@@ -24,7 +24,7 @@ namespace Data
         {
             float tmpScore = 0.0f;
 
-            tmpScore = 1000.0f / _timerScore;
+            tmpScore = 1000.0f - _timerScore;
             if (_numberOfDeath == 0)
                 tmpScore += _zeroDeathScore;
         

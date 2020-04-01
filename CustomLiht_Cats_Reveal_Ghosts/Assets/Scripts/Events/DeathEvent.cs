@@ -7,8 +7,7 @@ namespace Events
     public class DeathEvent : MonoBehaviour
     {
         [Header("Respawn")]
-        [SerializeField] private bool ghosts = false;
-        [SerializeField] private bool cats = false;
+        [SerializeField] private bool entitys = false;
         [SerializeField] private bool world = false;
     
         private UnityEvent Death = new UnityEvent();
@@ -18,14 +17,11 @@ namespace Events
             if (world)
             {
                 Death.AddListener(gameObject.GetComponent<LevelGenerator>().RegenerateWorld);
-                ghosts = cats = true;
+                entitys = true;
             }
         
-            if (ghosts)
-                Death.AddListener(gameObject.GetComponent<EntitySpawn>().RegenerateGhosts);
-
-            if (cats)
-                Death.AddListener(gameObject.GetComponent<EntitySpawn>().RegenerateCats);
+            if (entitys)
+                Death.AddListener(gameObject.GetComponent<EntitySpawn>().RegenerateEntitys);
         
             Death.AddListener(gameObject.GetComponent<EntitySpawn>().RegeneratePlayer);
         }

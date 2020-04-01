@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Character;
 using EntityAI;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 namespace WorldManagement
@@ -22,9 +23,13 @@ namespace WorldManagement
         private int _numberGhost = 0;
         private int _numberCats = 0;
         private GameObject _ghosts, _cats, _player;
+        
+        private List<GameObject> _tileList = new List<GameObject>();
     
         public void SpawnEntity(List<GameObject> p_tiles)
         {
+            _tileList = p_tiles;
+            
             //Create new empty objects for sorting purposes
             _ghosts = new GameObject("GHOSTS");
             _cats = new GameObject("CATS");
@@ -33,11 +38,11 @@ namespace WorldManagement
             DestroyEntitys();
         
             //first -> choose randomly '%' of tile to spawn ghost
-            ChooseSpawnableTile(p_tiles);
+            ChooseSpawnableTile(_tileList);
         
             //the spawn will be made based on the tile instead
         
-            foreach (var tile in p_tiles)
+            foreach (var tile in _tileList)
             {
                 GameObject ghost = null;
                 if (tile.GetComponent<Tiles.Tiles>().SpawnGhost)
@@ -87,7 +92,9 @@ namespace WorldManagement
             var targets = FindTargetPoints(p_tile.transform.Find("GhostData"));
         
             GameObject ghost = Instantiate(ghostPrefab, _ghosts.transform);
-            ghost.transform.position = targets[0].list[0].position;
+            ghost.GetComponent<NavMeshAgent>().Warp(targets[0].list[0].position);
+            
+            // ghost.transform.position = targets[0].list[0].position;
             ghost.GetComponent<GhostsBehavior>().SetTargets(targets);
 
             return ghost;
@@ -157,10 +164,15 @@ namespace WorldManagement
 
         private void ChooseSpawnableTile(List<GameObject> p_tiles)
         {
+            foreach (GameObject tile in p_tiles)
+            {
+                tile.GetComponent<Tiles.Tiles>().SpawnGhost = false;
+            }
+            
             int numberTiles = (int) Math.Ceiling(p_tiles.Count * percentageOfGhost);
 
             var tileList = new List<GameObject>();
-        
+
             for (int i = 0; i < numberTiles; ++i)
             {
                 int rng = Random.Range(0, p_tiles.Count);
@@ -182,16 +194,31 @@ namespace WorldManagement
             SpawnPlayer();
         }
     
-        public void RegenerateGhosts()
-        {
-            DestroyGhosts();
-            // SpawnGhost();
-        }
+        // public void RegenerateGhosts()
+        // {
+        //     DestroyGhosts();
+        //     SpawnGhost();
+        // }
+        //
+        // public void RegenerateCats()
+        // {
+        //     DestroyCats();
+        //     SpawnCats();
+        // }
 
-        public void RegenerateCats()
+        public void RegenerateEntitys()
         {
-            DestroyCats();
-            // SpawnCats();
+            DestroyEntitys();
+            
+            ChooseSpawnableTile(_tileList);
+            foreach (var tile in _tileList)
+            {
+                GameObject ghost = null;
+                if (tile.GetComponent<Tiles.Tiles>().SpawnGhost)
+                    ghost = SpawnGhost(tile);
+            
+                SpawnCats(tile, ghost);
+            }
         }
 
         private void DestroyEntitys()

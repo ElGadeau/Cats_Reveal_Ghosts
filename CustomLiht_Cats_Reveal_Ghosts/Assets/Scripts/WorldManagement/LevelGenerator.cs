@@ -11,12 +11,12 @@ namespace WorldManagement
     {
         public bool isPlaying = false;
     
-        public Tiles.Tiles startTilePrefab;
-        public Tiles.Tiles endTilePrefab;
+        public Tiles.Tiles startTilePrefab, endTilePrefab, firstTilePrefab;
+        // public Tiles.Tiles endTilePrefab;
         public List<Tiles.Tiles> tilesPrefabs = new List<Tiles.Tiles>();
         public Vector2Int iterationRange = new Vector2Int(5, 10);
 
-        private Tiles.Tiles _startTile, _endTile;
+        private Tiles.Tiles _startTile, _endTile, _firstTile;
         public List<GameObject> _placedTiles = new List<GameObject>();
         private List<Sides> _availableSides = new List<Sides>();
 
@@ -44,6 +44,10 @@ namespace WorldManagement
             PlaceStartTile();
             yield return interval;
 
+            //TODO the first tile need to be a blank floor without ghost
+            PlaceFirstTile();
+            yield return interval;
+
             int iterations = Random.Range(iterationRange.x, iterationRange.y);
             for (int i = 0; i < iterations; ++i)
             {
@@ -55,7 +59,7 @@ namespace WorldManagement
             yield return interval;
         
             GetComponent<NavMeshSurface>().BuildNavMesh();
-        
+            
             GetComponent<EntitySpawn>().CanSpawn = true;
             GetComponent<EntitySpawn>().SpawnEntity(_placedTiles);
         
@@ -71,6 +75,18 @@ namespace WorldManagement
             var tileTransform = _startTile.transform;
             tileTransform.position = Vector3.zero;
             tileTransform.rotation = Quaternion.identity;
+        }
+
+        private void PlaceFirstTile()
+        {
+            _firstTile = Instantiate(firstTilePrefab, transform);
+            
+            AddSideToList(_firstTile, ref _availableSides);
+            if (PlaceTileInWorld(_firstTile, false))
+                return;
+        
+            Destroy(_firstTile.gameObject);
+            ResetLevelGenerator();
         }
 
         private void PlaceRandomTile()
@@ -137,6 +153,9 @@ namespace WorldManagement
             if (_startTile)
                 Destroy(_startTile.gameObject);
         
+            if (_firstTile)
+                Destroy(_firstTile.gameObject);
+            
             if (_endTile)
                 Destroy(_endTile.gameObject);
 

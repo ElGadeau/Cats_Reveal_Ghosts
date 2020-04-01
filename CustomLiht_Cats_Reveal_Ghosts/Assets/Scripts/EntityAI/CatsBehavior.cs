@@ -16,7 +16,10 @@ namespace EntityAI
         private void Update()
         {
             if (_target == null)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 90);
                 return;
+            }
         
             //ignore the 'Y' position of the ghost
             Vector3 ghostPos = new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z);
