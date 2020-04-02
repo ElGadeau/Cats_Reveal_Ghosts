@@ -11,12 +11,12 @@ namespace Character
     {
         [Header("Control Settings")]
         [SerializeField] private float speed = 5.0f;
-
+        [SerializeField] private float deathTimer = 5.0f;
+        
+        public Animator myAnimator = null;
         private Camera _camera = null;
         private UnityEvent _deathEvent = new UnityEvent();
-
         public bool isDead = false;
-
         private GameObject _timer = null;
 
         private void Awake()
@@ -24,8 +24,8 @@ namespace Character
             _timer = GameObject.FindGameObjectWithTag("Timer");
             _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
             _deathEvent.AddListener(OnDeath);
-            _deathEvent.AddListener(_camera.GetComponent<CameraControl>().OnDeath);
-            _deathEvent.AddListener(GameObject.FindGameObjectWithTag("GameManager").GetComponent<DeathEvent>().OnDeath);
+            _deathEvent.AddListener(delegate { _camera.GetComponent<CameraControl>().OnDeath(deathTimer); });
+            _deathEvent.AddListener(delegate { GameObject.FindGameObjectWithTag("GameManager").GetComponent<DeathEvent>().OnDeath(deathTimer); });
             _deathEvent.AddListener(_timer.GetComponent<TimeScore>().OnDeath);
         }
     
@@ -35,7 +35,7 @@ namespace Character
                 return;
         
             PlayerControl();
-            if (transform.position.y <= -50.0f)
+            if (transform.position.y <= -5.0f)
                 _deathEvent.Invoke();
         }
 
@@ -62,6 +62,16 @@ namespace Character
             Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             input = Vector2.ClampMagnitude(input, 1);
 
+            
+            if (input.x != 0 || input.y != 0)
+            {
+                myAnimator.SetBool("Walk", true);
+            }
+            else
+            {
+                myAnimator.SetBool("Walk", false);
+            }
+            
             //calculate camera forward
             var camRot = _camera.transform.rotation.eulerAngles;
             var angle = Quaternion.Euler(0, camRot.y, 0);
@@ -79,22 +89,9 @@ namespace Character
 
         private void OnDeath()
         {
-            var nextRotation = Quaternion.AngleAxis(-90.0f, Vector3.right);
-            StartCoroutine(Dying(nextRotation));
+            myAnimator.SetBool("Walk", false);
+            myAnimator.SetBool("Fall", true);
             isDead = true;
-        }
-
-        IEnumerator Dying(Quaternion nextRot)
-        {
-            while (transform.rotation.eulerAngles.x > -90.0f)
-            {
-                // var currentRot = transform.rotation;
-
-                transform.rotation = Quaternion.Slerp(transform.rotation, nextRot, Time.deltaTime * 6);
-                yield return null;
-            }
-        
-            yield return new WaitForEndOfFrame();
         }
     }
 }

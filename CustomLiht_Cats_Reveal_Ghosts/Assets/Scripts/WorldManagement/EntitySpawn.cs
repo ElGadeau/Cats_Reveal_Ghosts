@@ -117,7 +117,7 @@ namespace WorldManagement
             _player.transform.rotation = Quaternion.Euler(-90, -90, 0);
             _player.SetActive(true);
             _player.GetComponent<PlayerMovement>().isDead = false;
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraControl>().FadeFromBlack();
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraControl>().FadeFromBlack(1.0f);
         }
     
         //Find the position of the navigation path for the selected ghost

@@ -416,6 +416,11 @@ PrefabInstance:
       propertyPath: Score
       value: 
       objectReference: {fileID: 759365313}
+    - target: {fileID: 6597906138130965536, guid: 61d8cb313395ae7408df4dab4baa1563,
+        type: 3}
+      propertyPath: fadeTime
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6597906138130965538, guid: 61d8cb313395ae7408df4dab4baa1563,
         type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -668,7 +673,7 @@ MonoBehaviour:
   - {fileID: 4111337682494682603, guid: 65d89ca3a6394c84287c7c1e1d10455b, type: 3}
   - {fileID: 7408265885877917993, guid: 1aa36930887db09459457326eb319963, type: 3}
   - {fileID: 3563297235605314176, guid: 1b1891e66e5bf0748889a54a79cf0fd9, type: 3}
-  iterationRange: {x: 1, y: 1}
+  iterationRange: {x: 20, y: 30}
   _placedTiles: []
 --- !u!114 &1630815789
 MonoBehaviour:
@@ -686,7 +691,7 @@ MonoBehaviour:
     type: 3}
   catPrefab: {fileID: 2345759327246398134, guid: 5090ea91a89b83b48bbcb2d29cd7bcc1,
     type: 3}
-  playerPrefab: {fileID: 4621469087718480656, guid: b081a7ae417bb0248b1b86e44ddc3f7f,
+  playerPrefab: {fileID: 3350464437773078526, guid: a8f17114d228fb74996b1749c1702c9f,
     type: 3}
   percentageOfGhost: 0.5
   percentageOfCats: 0.7

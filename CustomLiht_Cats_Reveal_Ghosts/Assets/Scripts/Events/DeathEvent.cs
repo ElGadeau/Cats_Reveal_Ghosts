@@ -26,9 +26,9 @@ namespace Events
             Death.AddListener(gameObject.GetComponent<EntitySpawn>().RegeneratePlayer);
         }
 
-        public void OnDeath()
+        public void OnDeath(float p_time)
         {
-            Invoke(nameof(FireEvent), 1.0f);
+            Invoke(nameof(FireEvent), p_time);
         }
 
         private void FireEvent()

@@ -12,7 +12,6 @@ namespace Character
         [SerializeField] private float speed = 1;
         [SerializeField] private Image blackScreen = null;
         [SerializeField] private GameObject Score = null;
-        [SerializeField] private float fadeTime = 1.0f;
 
         private Transform _player = null;
         private bool _isLerping = false;
@@ -22,7 +21,7 @@ namespace Character
 
         private void Start()
         {
-            // Score.SetActive(false);
+            Score.SetActive(false);
             
             var texts = Score.GetComponentsInChildren<Text>();
 
@@ -108,23 +107,23 @@ namespace Character
             }
         }
 
-        public void OnDeath()
+        public void OnDeath(float p_time)
         {
-            FadeToBlack();
+            FadeToBlack(p_time / 2);
         }
 
-        private void FadeToBlack()
+        private void FadeToBlack(float p_time)
         {
             blackScreen.color = Color.black;
             blackScreen.canvasRenderer.SetAlpha(0.0f);
-            blackScreen.CrossFadeAlpha(1.0f, fadeTime, false);
+            blackScreen.CrossFadeAlpha(1.0f, p_time, false);
         }
 
-        public void FadeFromBlack()
+        public void FadeFromBlack(float p_time)
         {
             blackScreen.color = Color.black;
             blackScreen.canvasRenderer.SetAlpha(1.0f);
-            blackScreen.CrossFadeAlpha(0.0f, fadeTime, false);
+            blackScreen.CrossFadeAlpha(0.0f, p_time, false);
         }
 
         public void EndGame(int p_score)
