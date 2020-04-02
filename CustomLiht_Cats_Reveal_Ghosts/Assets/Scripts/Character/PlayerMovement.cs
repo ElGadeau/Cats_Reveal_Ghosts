@@ -44,9 +44,11 @@ namespace Character
         {
             if (_canPlay)
                 return;
-        
+
             if (other.gameObject.CompareTag("Ghost"))
+            {
                 _deathEvent.Invoke();
+            }
 
             if (other.gameObject.CompareTag("EndTile"))
             {

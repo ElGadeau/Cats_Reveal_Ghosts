@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 
@@ -7,6 +8,8 @@ namespace EntityAI
     public class CatsBehavior : MonoBehaviour
     {
         [SerializeField] private Animator myAnimator = null;
+
+        [SerializeField] private List<Material> _materials = new List<Material>();
         
         private float speed = 2.0f;
         public GameObject _target;
@@ -24,6 +27,10 @@ namespace EntityAI
 
         private void Awake()
         {
+            //Find Random Material
+            int rng = UnityEngine.Random.Range(0, _materials.Count);
+            GetComponentInChildren<SkinnedMeshRenderer>().material = _materials[rng];
+            
             if (myAnimator == null)
                 myAnimator = GetComponent<Animator>();
 

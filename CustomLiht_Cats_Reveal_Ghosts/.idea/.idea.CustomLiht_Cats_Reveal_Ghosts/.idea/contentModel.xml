@@ -7,6 +7,24 @@
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="Effy" t="Include">
+          <e p="Includes" t="Include">
+            <e p="CustomLighting.hlsl" t="Include" />
+          </e>
+          <e p="Outline" t="Include">
+            <e p="Outline.shader" t="Include" />
+            <e p="PostProcessOutline.cs" t="Include" />
+            <e p="Scripts" t="Include">
+              <e p="RenderReplacementShaderToTexture.cs" t="Include" />
+            </e>
+            <e p="Shaders" t="Include">
+              <e p="HiddenNormalsTexture.shader" t="Include" />
+            </e>
+          </e>
+          <e p="Shader" t="Include">
+            <e p="mainlight.hlsl" t="Include" />
+          </e>
+        </e>
         <e p="Includes" t="Include">
           <e p="CustomLighting.hlsl" t="Include" />
         </e>

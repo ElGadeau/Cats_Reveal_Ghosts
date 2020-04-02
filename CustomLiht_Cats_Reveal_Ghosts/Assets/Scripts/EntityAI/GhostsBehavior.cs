@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,7 +8,7 @@ namespace EntityAI
 {
     public class GhostsBehavior : MonoBehaviour
     {
-        [System.Serializable]
+        [Serializable]
         public class Target
         {
             public Target()
@@ -19,20 +20,25 @@ namespace EntityAI
         }
     
         [SerializeField] private List<Target> targets = new List<Target>();
-        private NavMeshAgent Agent = null;
         [SerializeField] private Vector3 NextLocation = Vector3.zero;
         [SerializeField] private int LocationIndex = 0;
         [SerializeField] private int SelectedPath = 0;
-    
+        [SerializeField] private SkinnedMeshRenderer _meshRenderer = null;
+        [SerializeField] private Animator myAnimator = null;
+        
+        private NavMeshAgent Agent = null;
         private bool _isAgentNull, _isLocationNull;
 
         private void Awake()
         {
             Agent = gameObject.GetComponent<NavMeshAgent>();
-
+            _meshRenderer.enabled = false;
+            
             _isAgentNull = Agent == null;
             _isLocationNull = targets.Count <= 0;
 
+            // GetComponent<MeshRenderer>().enabled = false;
+            
             if (!_isLocationNull)
             {
                 NextLocation = targets[SelectedPath].list[0].position;
@@ -44,7 +50,12 @@ namespace EntityAI
         {
             if (_isLocationNull || _isAgentNull)
                 return;
-        
+
+            if (targets[SelectedPath].list.Count <= 1)
+            {
+                GetComponent<MeshRenderer>().enabled = true;
+            }
+            
             MoveToNextLocation();
         }
 
@@ -91,6 +102,19 @@ namespace EntityAI
             {
                 Physics.IgnoreCollision(other.collider, GetComponent<Collider>());
             }
+
+            if (other.gameObject.CompareTag("Player"))
+            {
+                _meshRenderer.enabled = true;
+                myAnimator.SetBool("Idle", false);
+                Invoke(nameof(ReturnToNormal), 3.0f);
+            }
+        }
+
+        private void ReturnToNormal()
+        {
+            _meshRenderer.enabled = false;
+            myAnimator.SetBool("Idle", true);
         }
     }
 }

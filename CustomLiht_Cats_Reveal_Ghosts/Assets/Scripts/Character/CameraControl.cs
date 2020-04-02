@@ -12,7 +12,8 @@ namespace Character
         [SerializeField] private float speed = 1;
         [SerializeField] private Image blackScreen = null;
         [SerializeField] private GameObject Score = null;
-
+        [SerializeField] private GameObject ControlUI = null;
+        
         private Transform _player = null;
         private bool _isLerping = false;
         private bool _isAxisInUse = false;
@@ -21,8 +22,7 @@ namespace Character
 
         private void Start()
         {
-            Score.SetActive(false);
-            
+            ControlUI.SetActive(false);
             var texts = Score.GetComponentsInChildren<Text>();
 
             foreach (Text text in texts)
@@ -109,11 +109,13 @@ namespace Character
 
         public void OnDeath(float p_time)
         {
+            ControlUI.SetActive(false);
             FadeToBlack(p_time / 2);
         }
 
         private void FadeToBlack(float p_time)
         {
+            ControlUI.SetActive(false);
             blackScreen.color = Color.black;
             blackScreen.canvasRenderer.SetAlpha(0.0f);
             blackScreen.CrossFadeAlpha(1.0f, p_time, false);
@@ -124,10 +126,12 @@ namespace Character
             blackScreen.color = Color.black;
             blackScreen.canvasRenderer.SetAlpha(1.0f);
             blackScreen.CrossFadeAlpha(0.0f, p_time, false);
+            ControlUI.SetActive(true);
         }
 
         public void EndGame(int p_score)
         {
+            ControlUI.SetActive(false);
             blackScreen.CrossFadeAlpha(1.0f, 0.5f, false);
             var texts = Score.GetComponentsInChildren<Text>();
 

@@ -1407,7 +1407,7 @@ GameObject:
   - component: {fileID: 2349183590795898867}
   - component: {fileID: 822273106206850081}
   m_Layer: 0
-  m_Name: Cat_Rig
+  m_Name: Cat_V2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1461,8 +1461,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myAnimator: {fileID: 2349183590795898867}
+  _materials:
+  - {fileID: 2100000, guid: 37247072b2b986846ac8c011f5ecaf66, type: 2}
+  - {fileID: 2100000, guid: 8dcae4d1b5175a24f84f27d0144cd31b, type: 2}
+  - {fileID: 2100000, guid: b11133f6920c99541a11614e4a49fdbe, type: 2}
+  - {fileID: 2100000, guid: 953960666d84401499210f338a219b15, type: 2}
+  - {fileID: 2100000, guid: f5e7e50f308bfcc4fa23a874634bad5a, type: 2}
+  - {fileID: 2100000, guid: 9df00e67ada86c3469a53ec24ad54aa5, type: 2}
   _target: {fileID: 0}
-  headBone: {fileID: 8487855376138874074}
 --- !u!1 &8913227892259226182
 GameObject:
   m_ObjectHideFlags: 0
@@ -1505,7 +1511,7 @@ GameObject:
   - component: {fileID: 4878220113314816269}
   m_Layer: 0
   m_Name: Geo_Cat
-  m_TagString: Untagged
+  m_TagString: Mesh
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
