@@ -16,7 +16,7 @@ namespace Character
         public Animator myAnimator = null;
         private Camera _camera = null;
         private UnityEvent _deathEvent = new UnityEvent();
-        public bool isDead = false;
+        public bool _canPlay = false;
         private GameObject _timer = null;
 
         private void Awake()
@@ -31,7 +31,7 @@ namespace Character
     
         private void Update()
         {
-            if (isDead)
+            if (_canPlay)
                 return;
         
             PlayerControl();
@@ -42,7 +42,7 @@ namespace Character
         //Kill the player when colliding with a ghost
         private void OnCollisionEnter(Collision other)
         {
-            if (isDead)
+            if (_canPlay)
                 return;
         
             if (other.gameObject.CompareTag("Ghost"))
@@ -52,7 +52,7 @@ namespace Character
             {
                 _timer.GetComponent<TimeScore>().ShouldRun = false;
                 _camera.GetComponent<CameraControl>().EndGame(_timer.GetComponent<TimeScore>().GetScore());
-                isDead = true;
+                _canPlay = true;
             }
         }
     
@@ -91,7 +91,7 @@ namespace Character
         {
             myAnimator.SetBool("Walk", false);
             myAnimator.SetBool("Fall", true);
-            isDead = true;
+            _canPlay = true;
         }
     }
 }

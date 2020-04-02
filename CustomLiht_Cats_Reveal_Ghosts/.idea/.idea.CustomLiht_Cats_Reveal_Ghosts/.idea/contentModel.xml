@@ -51,6 +51,7 @@
           </e>
           <e p="Menu" t="Include">
             <e p="ButonBehavior.cs" t="Include" />
+            <e p="PauseMenu.cs" t="Include" />
           </e>
           <e p="Tiles" t="Include">
             <e p="Sides.cs" t="Include" />
