@@ -6,14 +6,9 @@ namespace Tiles
     {
         public Sides[] sides;
         public Collider colliders;
-        private bool spawnGhost = false;
 
         public Bounds TileBound => colliders.bounds;
 
-        public bool SpawnGhost
-        {
-            get => spawnGhost;
-            set => spawnGhost = value;
-        }
+        public bool SpawnGhost { get; set; } = false;
     }
 }

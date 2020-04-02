@@ -9,6 +9,7 @@ public class PauseMenu : MonoBehaviour
 {
     public static bool isPaused = false;
     public GameObject pauseMenuUI;
+    public GameObject controlUI;
 
     private bool _axisInUse = false;
 
@@ -26,13 +27,9 @@ public class PauseMenu : MonoBehaviour
             _axisInUse = true;
             
             if (isPaused)
-            {
                 Resume();
-            }
             else
-            {
                 Pause();
-            }
         }
         else if (Input.GetAxisRaw("Start") == 0.0f && _axisInUse)
         {
@@ -43,6 +40,7 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+        controlUI.SetActive(true);
         Time.timeScale = 1.0f;
         isPaused = false;
     }
@@ -56,6 +54,7 @@ public class PauseMenu : MonoBehaviour
     private void Pause()
     {
         pauseMenuUI.SetActive(true);
+        controlUI.SetActive(false);
         Time.timeScale = 0.0f;
         isPaused = true;
     }
