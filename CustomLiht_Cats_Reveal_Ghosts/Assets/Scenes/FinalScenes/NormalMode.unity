@@ -977,14 +977,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlaying: 0
-  startTilePrefab: {fileID: -4780418454362096893, guid: f21e247c51a12dd4bbd39599b1f89857,
-    type: 3}
+  startTilePrefab: {fileID: 1710166557, guid: 07e92510267259a4dbc948221a527271, type: 3}
   endTilePrefab: {fileID: 1179759823369141013, guid: 7876377728f4ff34589442e8f84cba95,
     type: 3}
   firstTilePrefab: {fileID: 1179759823369141013, guid: 3a6ecffa0f1b50d448c597048c38b2a4,
     type: 3}
   tilesPrefabs:
-  - {fileID: 1721493168851302452, guid: b5720d5cc10fbce4380ca8b2539deba9, type: 3}
+  - {fileID: 6488808821757222970, guid: a1f293a9d43679f41a6670fb5682a215, type: 3}
   - {fileID: 8545085473669127245, guid: 40d3ac80049a27f449138f1db7866683, type: 3}
   - {fileID: 1179759823369141013, guid: 3a6ecffa0f1b50d448c597048c38b2a4, type: 3}
   - {fileID: 4111337682494682603, guid: 65d89ca3a6394c84287c7c1e1d10455b, type: 3}

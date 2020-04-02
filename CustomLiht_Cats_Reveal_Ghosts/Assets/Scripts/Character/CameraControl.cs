@@ -42,7 +42,7 @@ namespace Character
         {
             if (_player == null)
                 FindPlayer();
-            else
+            else if (Time.timeScale > 0.0f)
             {
                 CheckInput();
                 ApplyRotation();
