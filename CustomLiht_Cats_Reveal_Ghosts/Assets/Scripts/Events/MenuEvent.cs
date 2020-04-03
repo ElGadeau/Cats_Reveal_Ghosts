@@ -10,6 +10,9 @@ namespace Events
         
         private void Awake()
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            
             MainMenu.SetActive(true);
             LevelSelection.SetActive(false);
         }
