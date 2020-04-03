@@ -446,7 +446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d99d69236593d45a3041367514b494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 2.5
   deathTimer: 5
   myAnimator: {fileID: 3350464437773078527}
   _canPlay: 0

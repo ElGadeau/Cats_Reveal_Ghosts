@@ -92,7 +92,7 @@ namespace Character
             Vector3 camF = angle * Vector3.forward;
             Vector3 camR = _camera.transform.right;
 
-            Vector3 mov = (camF * input.y + camR * input.x) * Time.deltaTime * speed;
+            Vector3 mov = (camF * input.y + camR * input.x) * (Time.deltaTime * speed);
 
             if (mov.x != 0.0f || mov.z != 0.0f)
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mov.normalized), 0.2f);

@@ -25,12 +25,14 @@ namespace EntityAI
         [SerializeField] private int SelectedPath = 0;
         [SerializeField] private SkinnedMeshRenderer _meshRenderer = null;
         [SerializeField] private Animator myAnimator = null;
+        [SerializeField] private ParticleSystem myParticle = null;
         
         private NavMeshAgent Agent = null;
         private bool _isAgentNull, _isLocationNull;
 
         private void Awake()
         {
+            myParticle.Stop();
             Agent = gameObject.GetComponent<NavMeshAgent>();
             _meshRenderer.enabled = false;
             
@@ -105,6 +107,9 @@ namespace EntityAI
 
             if (other.gameObject.CompareTag("Player"))
             {
+                if (myParticle != null)
+                    myParticle.Play();
+                
                 _meshRenderer.enabled = true;
                 myAnimator.SetBool("Idle", false);
                 Invoke(nameof(ReturnToNormal), 3.0f);
