@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Data;
 using Events;
 using UnityEngine;
@@ -54,10 +55,20 @@ namespace Character
             {
                 _timer.GetComponent<TimeScore>().ShouldRun = false;
                 _camera.GetComponent<CameraControl>().EndGame(_timer.GetComponent<TimeScore>().GetScore());
-                _canPlay = true;
+                // _canPlay = true;
             }
         }
-    
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("EndTile"))
+            {
+                _timer.GetComponent<TimeScore>().ShouldRun = false;
+                _camera.GetComponent<CameraControl>().EndGame(_timer.GetComponent<TimeScore>().GetScore());
+                // _canPlay = true;
+            }
+        }
+
         //Move the player using the direction of the camera
         private void PlayerControl()
         {

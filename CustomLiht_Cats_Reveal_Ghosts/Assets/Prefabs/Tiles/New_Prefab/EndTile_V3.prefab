@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!65 &3117952825585775436
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170843023815589647}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 0.14999999, z: 4}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2881934307387311838
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,7 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5862304702666708860}
   - component: {fileID: 8330716426957955322}
-  - component: {fileID: 4222680390484720358}
+  - component: {fileID: 6774147381237310423}
   m_Layer: 9
   m_Name: EndTile_V3
   m_TagString: EndTile
@@ -131,7 +144,7 @@ MonoBehaviour:
   - {fileID: 8380433044896258257}
   - {fileID: 6449613151948847693}
   colliders: {fileID: 5957550611685471849}
---- !u!65 &4222680390484720358
+--- !u!65 &6774147381237310423
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,11 +152,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7227861424201576634}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 0.15, z: 4}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.9390619, z: 1}
+  m_Center: {x: 0, y: 0.49768198, z: 0}
 --- !u!1001 &2045218328264903027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -310,6 +323,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50a99c3ec0a1570479c33162a4edb7d3, type: 3}
+--- !u!1 &1170843023815589647 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2719303449192679853, guid: 50a99c3ec0a1570479c33162a4edb7d3,
+    type: 3}
+  m_PrefabInstance: {fileID: 3856000002582804130}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2766602557556215068 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1434310499059186622, guid: 50a99c3ec0a1570479c33162a4edb7d3,
