@@ -1812,7 +1812,7 @@ MonoBehaviour:
     type: 3}
   playerPrefab: {fileID: 3350464437773078526, guid: a8f17114d228fb74996b1749c1702c9f,
     type: 3}
-  percentageOfGhost: 0.5
+  percentageOfGhost: 0.7
   percentageOfCats: 0.5
 --- !u!4 &1970071406
 Transform:
@@ -1840,6 +1840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 782e1b3ce28c14143be9a0a76c455e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volume: 0.1
   sound: {fileID: 8300000, guid: d91e5d9f2d9665b48bc575034f9c01c6, type: 3}
   secondSound: {fileID: 8300000, guid: 8bd7f36d125ce114c9f9a3d0b1afa486, type: 3}
 --- !u!1 &2015831303

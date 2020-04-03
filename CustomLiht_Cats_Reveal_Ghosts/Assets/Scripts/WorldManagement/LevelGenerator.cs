@@ -143,7 +143,7 @@ namespace WorldManagement
         
             return false;
         }
-    
+        
         private void ResetLevelGenerator()
         {
             GetComponent<EntitySpawn>().CanSpawn = false;

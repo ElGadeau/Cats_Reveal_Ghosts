@@ -51,12 +51,14 @@ namespace EntityAI
         private void Update()
         {
             if (_isLocationNull || _isAgentNull)
-                return;
-
-            if (targets[SelectedPath].list.Count <= 1)
             {
-                GetComponent<MeshRenderer>().enabled = true;
+                _meshRenderer.enabled = true;
+                return;
             }
+
+            // if (targets[SelectedPath].list.Count <= 1)
+            // {
+            // }
             
             MoveToNextLocation();
         }
@@ -105,7 +107,7 @@ namespace EntityAI
                 Physics.IgnoreCollision(other.collider, GetComponent<Collider>());
             }
 
-            if (other.gameObject.CompareTag("Player"))
+            if (other.gameObject.CompareTag("Player") && !_isAgentNull)
             {
                 if (myParticle != null)
                     myParticle.Play();

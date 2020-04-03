@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour
 {
+    [SerializeField] [Range(0.0f, 1.0f)] private float volume = 0.5f;
     [SerializeField] private AudioClip sound = null;
     [SerializeField] private AudioClip secondSound = null;
     private AudioSource usedSound = new AudioSource();
@@ -33,7 +34,7 @@ public class SoundManager : MonoBehaviour
         }
         
         usedSound.loop = true;
-        usedSound.volume = 0.15f;
+        usedSound.volume = volume;
         PlaySound();
     }
 
