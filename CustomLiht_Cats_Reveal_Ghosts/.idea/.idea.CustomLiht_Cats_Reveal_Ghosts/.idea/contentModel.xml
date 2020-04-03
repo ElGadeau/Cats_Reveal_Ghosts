@@ -78,6 +78,7 @@
           <e p="WorldManagement" t="Include">
             <e p="EntitySpawn.cs" t="Include" />
             <e p="LevelGenerator.cs" t="Include" />
+            <e p="SoundManager.cs" t="Include" />
           </e>
         </e>
       </e>
