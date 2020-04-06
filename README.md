@@ -13,9 +13,9 @@ Developped over the course of 3 weeks.
 
 ## Authors
 
-* **Athénais Aquaviva** - *Artist and Game Design* - [ArtStation](https://radjam.artstation.com/)
-* **Charlotte Samoyeau** - *Artist and Game Design* - [ArtStation](https://www.artstation.com/charlotte_samoyeau)
-* **Effy Lang** - *Artist and Game Design* - [ArtStation](https://www.artstation.com/effypixii)
-* **Hélène Vendryes** - *Artist and Game Design* - [ArtStation](https://www.artstation.com/tewanna)
-* **Jules Douault** - *Artist and Game Design*  - [ArtStation](https://www.artstation.com/juli0)
-* **Lilian Gadeau** - *Programmer and Game Design*
+* **Athénais Aquaviva** - *Art and Game Design* - [ArtStation](https://radjam.artstation.com/)
+* **Charlotte Samoyeau** - *Art and Game Design* - [ArtStation](https://www.artstation.com/charlotte_samoyeau)
+* **Effy Lang** - *Art and Game Design* - [ArtStation](https://www.artstation.com/effypixii)
+* **Hélène Vendryes** - *Art and Game Design* - [ArtStation](https://www.artstation.com/tewanna)
+* **Jules Douault** - *Art and Game Design*  - [ArtStation](https://www.artstation.com/juli0)
+* **Lilian Gadeau** - *Programming and Game Design*
